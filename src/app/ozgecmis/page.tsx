@@ -151,7 +151,7 @@ export default function ResumePage() {
                 </svg>
               </div> */}
               <Image
-                src="/img/avatars/ayla_senturk-fotor-v1.png"
+                src="/img/avatars/ayla_senturk.gif"
                 alt="Ayla Şentürk"
                 width={96}
                 height={96}

@@ -74,7 +74,7 @@ function calculateAge(day: number, month: number, year: number): AgeResult | nul
   const totalWeeks = Math.floor(totalDays / 7);
   const totalMonths = years * 12 + months;
 
-  let nextBirthday = new Date(now.getFullYear(), month - 1, day);
+  const nextBirthday = new Date(now.getFullYear(), month - 1, day);
   if (nextBirthday < now) {
     nextBirthday.setFullYear(now.getFullYear() + 1);
   }

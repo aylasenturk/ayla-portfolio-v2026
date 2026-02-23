@@ -1,12 +1,14 @@
 "use client";
 
-import { Menu, Github, Linkedin, Twitter } from "lucide-react";
+import { Menu, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
 
 interface NavbarProps {
   onMenuToggle: () => void;
+  theme: "light" | "dark";
+  onThemeToggle: () => void;
 }
 
-export default function Navbar({ onMenuToggle }: NavbarProps) {
+export default function Navbar({ onMenuToggle, theme, onThemeToggle }: NavbarProps) {
   return (
     <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-border">
       <div className="flex items-center justify-between px-4 py-3 sm:px-6">
@@ -19,8 +21,18 @@ export default function Navbar({ onMenuToggle }: NavbarProps) {
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Sağ: Sosyal medya linkleri */}
+        {/* Sağ: Tema toggle + Sosyal medya linkleri */}
         <div className="flex items-center gap-1 ml-auto">
+          <button
+            onClick={onThemeToggle}
+            className="btn-ghost rounded-lg p-2"
+            aria-label={theme === "dark" ? "Açık temaya geç" : "Koyu temaya geç"}
+          >
+            {theme === "dark" ? <Sun className="w-4.5 h-4.5" /> : <Moon className="w-4.5 h-4.5" />}
+          </button>
+
+          <div className="w-px h-5 bg-border mx-1" />
+
           <a
             href="https://github.com/aylasenturk"
             target="_blank"
