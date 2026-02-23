@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { clsx } from "clsx";
@@ -35,7 +33,6 @@ function getCalendarDays(
 
   const days: CalendarDay[] = [];
 
-  // Önceki ayın günleri
   const prevMonthLastDay = new Date(year, month, 0).getDate();
   for (let i = startDay - 1; i >= 0; i--) {
     const d = prevMonthLastDay - i;
@@ -48,7 +45,6 @@ function getCalendarDays(
     });
   }
 
-  // Bu ayın günleri
   for (let d = 1; d <= lastDay.getDate(); d++) {
     const date = new Date(year, month, d);
     days.push({
@@ -66,7 +62,6 @@ function getCalendarDays(
     });
   }
 
-  // Sonraki ayın günleri
   const totalCells = days.length;
   const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
   for (let i = 1; i <= remaining; i++) {
@@ -121,7 +116,6 @@ export default function DatePickerPage() {
           {/* Takvim */}
           <div className="card">
             <div className="card-body">
-              {/* Başlık ve Navigasyon */}
               <div className="flex items-center justify-between mb-4">
                 <button
                   onClick={goToPrevMonth}
@@ -142,7 +136,6 @@ export default function DatePickerPage() {
                 </button>
               </div>
 
-              {/* Gün isimleri */}
               <div className="grid grid-cols-7 mb-2">
                 {DAY_HEADERS.map((header) => (
                   <div
@@ -154,7 +147,6 @@ export default function DatePickerPage() {
                 ))}
               </div>
 
-              {/* Günler */}
               <div className="grid grid-cols-7 gap-0.5" role="grid" aria-label="Takvim günleri">
                 {calendarDays.map((day, index) => (
                   <button

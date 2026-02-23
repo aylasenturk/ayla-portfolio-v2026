@@ -8,17 +8,13 @@ Verilen geri bildirim doğrultusunda proje, ASP.NET Core MVC'den tamamen ayrış
 
 > *İstenen: Vite ile yeni React projesi*
 
-Vite yerine **Next.js 15 (App Router)** tercih edildi. Nedeni:
-
-- `output: "export"` ile tamamen statik HTML/CSS/JS çıktısı üretiyor (sunucu gerektirmiyor).
-- Dosya tabanlı routing sayesinde `react-router-dom`'a ihtiyaç kalmıyor.
-- SEO için metadata desteği hazır geliyor.
+İstenildiği gibi **Vite** kullanılarak React projesi oluşturuldu.
 
 ```bash
-npx create-next-app@latest ayla-portfolio --typescript --tailwind --app
+npm create vite@latest ayla-portfolio --template react-ts
 ```
 
-**Teknoloji yığını:** Next.js 15, React 19, TypeScript 5.7, Tailwind CSS v4, Lucide React
+**Teknoloji yığını:** Vite 6, React 19, TypeScript 5.7, Tailwind CSS v4, react-router-dom 7, Lucide React
 
 ---
 
@@ -28,9 +24,9 @@ npx create-next-app@latest ayla-portfolio --typescript --tailwind --app
 
 - Görseller `public/img/` altına taşındı (avatarlar, proje görselleri vb.).
 - Bootstrap ve jQuery **tamamen kaldırıldı**; yerine Tailwind CSS v4 kullanıldı.
-- Sneat template'inin hazır CSS'leri yerine `src/app/globals.css` içinde `@theme` direktifi ile özel bir tasarım sistemi oluşturuldu.
+- Sneat template'inin hazır CSS'leri yerine `src/index.css` içinde `@theme` direktifi ile özel bir tasarım sistemi oluşturuldu.
 
-**İlgili dosya:** `src/app/globals.css` — 13 renk değişkeni, 15+ bileşen sınıfı (.card, .btn-\*, .badge-\*, .input, .select)
+**İlgili dosya:** `src/index.css` — 13 renk değişkeni, 15+ bileşen sınıfı (.card, .btn-\*, .badge-\*, .input, .select)
 
 ---
 
@@ -38,15 +34,15 @@ npx create-next-app@latest ayla-portfolio --typescript --tailwind --app
 
 > *İstenen: ContentNavbarLayout.cshtml → MainLayout.jsx, Navbar.jsx, Sidebar.jsx*
 
-| Eski (.NET)                          | Yeni (React/Next.js)                        | Satır |
+| Eski (.NET)                          | Yeni (React/Vite)                            | Satır |
 |--------------------------------------|----------------------------------------------|-------|
-| `ContentNavbarLayout.cshtml`         | `src/components/layout/MainLayout.tsx`       | 47    |
-| Navbar kısmı (partial view)          | `src/components/layout/Navbar.tsx`           | 55    |
-| Sidebar kısmı (partial view)         | `src/components/layout/Sidebar.tsx`          | 98    |
-| Footer kısmı                         | `src/components/layout/Footer.tsx`           | 47    |
-| `_Layout.cshtml` (kök)              | `src/app/layout.tsx`                         | 50    |
+| `ContentNavbarLayout.cshtml`         | `src/components/layout/MainLayout.tsx`        | 45    |
+| Navbar kısmı (partial view)          | `src/components/layout/Navbar.tsx`            | 65    |
+| Sidebar kısmı (partial view)         | `src/components/layout/Sidebar.tsx`           | 96    |
+| Footer kısmı                         | `src/components/layout/Footer.tsx`            | 47    |
+| `_Layout.cshtml` (kök)              | `src/App.tsx` + `index.html`                  | 30+18 |
 
-- `react-router-dom` yerine **Next.js App Router** kullanıldı (dosya tabanlı routing).
+- Sayfa geçişleri için **react-router-dom v7** kullanıldı (istendiği gibi).
 - Navigasyon yapısı `src/lib/navigation.ts` dosyasında merkezi olarak tanımlı; 3 grup, 10 link.
 - Sidebar mobilde overlay ile açılıp kapanıyor, masaüstünde sabit.
 - Navbar'da dark mode toggle butonu (Sun/Moon) ve sosyal medya linkleri mevcut.
@@ -57,18 +53,18 @@ npx create-next-app@latest ayla-portfolio --typescript --tailwind --app
 
 > *İstenen: Her .cshtml → bir React Component*
 
-| Eski (.NET View)                        | Yeni (Next.js Page)                                    | Satır |
-|-----------------------------------------|---------------------------------------------------------|-------|
-| `Views/Portfolio/Index.cshtml`          | `src/app/page.tsx` (Ana Sayfa)                          | 152   |
-| `Views/Portfolio/Projects.cshtml`       | `src/app/projeler/page.tsx`                             | 130   |
-| `Views/Portfolio/Articles.cshtml`       | `src/app/makaleler/page.tsx`                            | 104   |
-| `Views/Portfolio/Contact.cshtml`        | `src/app/iletisim/page.tsx`                             | 225   |
-| `Views/Portfolio/Resume.cshtml`         | `src/app/ozgecmis/page.tsx`                             | 515   |
-| `Views/Tools/Pomodoro.cshtml`           | `src/app/araclar/pomodoro/page.tsx`                     | 285   |
-| `Views/Tools/TaskTracker.cshtml`        | `src/app/araclar/gorev-takipcisi/page.tsx`              | 212   |
-| `Views/Tools/DatePicker.cshtml`         | `src/app/araclar/tarih-secici/page.tsx`                 | 230   |
-| `Views/Tools/TempConverter.cshtml`      | `src/app/araclar/sicaklik-donusturucu/page.tsx`         | 227   |
-| `Views/Tools/AgeCalculator.cshtml`      | `src/app/araclar/yas-hesaplayici/page.tsx`              | 284   |
+| Eski (.NET View)                        | Yeni (React Sayfası)                                   |
+|-----------------------------------------|---------------------------------------------------------|
+| `Views/Portfolio/Index.cshtml`          | `src/pages/HomePage.tsx`                                |
+| `Views/Portfolio/Projects.cshtml`       | `src/pages/ProjectsPage.tsx`                            |
+| `Views/Portfolio/Articles.cshtml`       | `src/pages/ArticlesPage.tsx`                            |
+| `Views/Portfolio/Contact.cshtml`        | `src/pages/ContactPage.tsx`                             |
+| `Views/Portfolio/Resume.cshtml`         | `src/pages/ResumePage.tsx`                              |
+| `Views/Tools/Pomodoro.cshtml`           | `src/pages/PomodoroPage.tsx`                            |
+| `Views/Tools/TaskTracker.cshtml`        | `src/pages/TaskTrackerPage.tsx`                         |
+| `Views/Tools/DatePicker.cshtml`         | `src/pages/DatePickerPage.tsx`                          |
+| `Views/Tools/TempConverter.cshtml`      | `src/pages/TemperatureConverterPage.tsx`                |
+| `Views/Tools/AgeCalculator.cshtml`      | `src/pages/AgeCalculatorPage.tsx`                       |
 
 Ek olarak yeniden kullanılabilir `PageHeader` bileşeni oluşturuldu (`src/components/ui/PageHeader.tsx`) — 6 sayfada breadcrumb başlık olarak kullanılıyor.
 
@@ -112,7 +108,7 @@ Projede hiçbir .NET kalıntısı bulunmuyor:
 - `Views/` klasörü yok
 - jQuery ve Bootstrap bağımlılığı yok
 
-**Sonuç:** Proje %100 statik frontend uygulaması. `npm run build` komutu `out/` dizinine saf HTML/CSS/JS çıktısı üretiyor. Herhangi bir statik hosting servisine (Vercel, Netlify, GitHub Pages) doğrudan deploy edilebilir.
+**Sonuç:** Proje %100 statik frontend uygulaması. `npm run build` komutu `dist/` dizinine saf HTML/CSS/JS çıktısı üretiyor. Herhangi bir statik hosting servisine (Vercel, Netlify, GitHub Pages) doğrudan deploy edilebilir.
 
 ---
 
@@ -125,7 +121,6 @@ Görevde istenenin ötesinde şu iyileştirmeler de yapıldı:
 | **TypeScript**           | Tüm bileşenler tip güvenli (interface, type tanımları)          |
 | **Tailwind CSS v4**      | Bootstrap yerine utility-first CSS; özel tasarım sistemi        |
 | **Dark Mode**            | Manuel toggle, localStorage ile kalıcı, koyu lacivert tema      |
-| **SEO Metadata**         | Her sayfada Open Graph ve meta tag desteği                      |
 | **Responsive Tasarım**   | Mobil uyumlu sidebar overlay, tüm sayfalarda responsive grid    |
 | **Erişilebilirlik**      | aria-label, aria-current, semantik HTML                         |
 

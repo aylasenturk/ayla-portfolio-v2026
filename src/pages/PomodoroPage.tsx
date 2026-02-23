@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Play, Pause, RotateCcw, Settings, CheckCircle } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
@@ -47,7 +45,6 @@ export default function PomodoroPage() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Ses dosyasını yükle
   useEffect(() => {
     audioRef.current = new Audio(
       "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
@@ -86,7 +83,6 @@ export default function PomodoroPage() {
     }
   }, [mode, sessionCount, getTimeForMode]);
 
-  // Zamanlayıcı mantığı
   useEffect(() => {
     if (!isRunning) return;
 
@@ -142,7 +138,6 @@ export default function PomodoroPage() {
             <div className="card-body text-center">
               <h2 className="text-base font-semibold mb-4">Pomodoro</h2>
 
-              {/* Mod bilgisi */}
               <p
                 className={`text-sm font-medium mb-3 ${MODE_COLORS[mode]}`}
                 aria-live="polite"
@@ -150,7 +145,6 @@ export default function PomodoroPage() {
                 {MODE_LABELS[mode]}
               </p>
 
-              {/* Geri sayım */}
               <div
                 className="text-6xl font-bold mb-6 font-mono tabular-nums"
                 aria-label={`Kalan süre: ${formatTime(timeLeft)}`}
@@ -158,7 +152,6 @@ export default function PomodoroPage() {
                 {formatTime(timeLeft)}
               </div>
 
-              {/* Kontrol butonları */}
               <div className="flex gap-2 justify-center mb-4">
                 <button
                   onClick={handleStart}
@@ -188,7 +181,6 @@ export default function PomodoroPage() {
                 </button>
               </div>
 
-              {/* Oturum sayısı */}
               <p className="text-sm text-text-muted">
                 Tamamlanan Çalışma Oturumu:{" "}
                 <span className="font-bold">{sessionCount}</span>

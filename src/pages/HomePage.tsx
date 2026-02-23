@@ -1,5 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   FolderOpen,
   BookOpen,
@@ -11,10 +10,6 @@ import {
   Accessibility,
   Smartphone,
 } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "Ana Sayfa",
-};
 
 const quickAccessCards = [
   {
@@ -95,7 +90,7 @@ export default function HomePage() {
                 vitrinidir. HTML, CSS ve JavaScript ile oluşturulmuş interaktif
                 bileşenler, üretkenlik araçları ve API entegrasyonları içerir.
               </p>
-              <Link href="/projeler" className="btn btn-primary">
+              <Link to="/projeler" className="btn btn-primary">
                 Projeleri Gör
               </Link>
             </div>
@@ -108,7 +103,7 @@ export default function HomePage() {
         {quickAccessCards.map((card) => {
           const Icon = card.icon;
           return (
-            <Link key={card.href} href={card.href} className="card group hover:shadow-md transition-shadow">
+            <Link key={card.href} to={card.href} className="card group hover:shadow-md transition-shadow">
               <div className="card-body">
                 <div className={`avatar avatar-md ${card.color} mb-4`}>
                   <Icon className="w-5 h-5" />

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Plus, Trash2, ClipboardList } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
@@ -16,7 +14,6 @@ type FilterType = "all" | "todo" | "done";
 const STORAGE_KEY = "tasks";
 
 function loadTasks(): Task[] {
-  if (typeof window === "undefined") return [];
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   } catch {
@@ -34,13 +31,11 @@ export default function TaskTrackerPage() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // localStorage'dan yükle
   useEffect(() => {
     setTasks(loadTasks());
     setIsLoaded(true);
   }, []);
 
-  // localStorage'a kaydet
   useEffect(() => {
     if (isLoaded) saveTasks(tasks);
   }, [tasks, isLoaded]);

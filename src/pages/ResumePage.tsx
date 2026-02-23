@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-import Image from "next/image";
 import {
   Linkedin,
   Github,
@@ -25,10 +23,6 @@ import {
   Info,
 } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
-
-export const metadata: Metadata = {
-  title: "Özgeçmiş",
-};
 
 interface SkillBar {
   name: string;
@@ -133,30 +127,12 @@ export default function ResumePage() {
           {/* Profil */}
           <div className="card">
             <div className="card-body text-center">
-              {/* <div className="w-24 h-24 mx-auto mb-3 rounded-full bg-primary-100 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-primary-600"
-                >
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div> */}
-              <Image
+              <img
                 src="/img/avatars/ayla_senturk.gif"
                 alt="Ayla Şentürk"
                 width={96}
                 height={96}
                 className="w-24 h-24 mx-auto mb-3 rounded-full object-cover"
-                priority
               />
               <h2 className="text-lg font-semibold">Ayla ŞENTÜRK</h2>
               <p className="text-sm text-text-muted mb-4">
@@ -216,13 +192,6 @@ export default function ResumePage() {
                   ayla.senturk35@gmail.com
                 </p>
               </div>
-              {/* <div>
-                <p className="text-xs text-text-muted">Telefon</p>
-                <p className="text-sm flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-text-muted" />
-                  0553 153 75 88
-                </p>
-              </div> */}
             </div>
           </div>
 
@@ -470,15 +439,15 @@ export default function ResumePage() {
             <div className="card-body">
               <p className="text-sm text-text-secondary mb-4 leading-relaxed">
                 Bu web sitesi, <strong>bulud.de</strong> web developer iş başvurusu
-                için özel olarak hazırlanmış, interaktif bileşenler içeren bir React /
-                Next.js uygulamasıdır.
+                için özel olarak hazırlanmış, interaktif bileşenler içeren bir React
+                uygulamasıdır.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Kullanılan Teknolojiler:</h3>
                   <div className="flex flex-wrap gap-1.5">
                     <span className="badge badge-primary">React</span>
-                    <span className="badge badge-neutral">Next.js</span>
+                    <span className="badge badge-neutral">Vite</span>
                     <span className="badge badge-info">Tailwind CSS</span>
                     <span className="badge badge-warning">TypeScript</span>
                   </div>
@@ -496,7 +465,7 @@ export default function ResumePage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-1 h-1 rounded-full bg-text-muted mt-2 flex-shrink-0" />
-                      Statik site (SSG) ile hızlı yüklenme
+                      Vite ile hızlı geliştirme ve build
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-1 h-1 rounded-full bg-text-muted mt-2 flex-shrink-0" />

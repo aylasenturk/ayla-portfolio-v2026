@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
 import { Code2, Palette, CodeSquare, Accessibility, Calendar } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
-
-export const metadata: Metadata = {
-  title: "Makaleler",
-};
 
 const articles = [
   {

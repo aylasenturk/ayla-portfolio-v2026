@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Calculator, AlertCircle, Info } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
@@ -209,7 +207,6 @@ export default function AgeCalculatorPage() {
                 Hesapla
               </button>
 
-              {/* Hata */}
               {error && (
                 <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 text-red-700 border border-red-200">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -217,7 +214,6 @@ export default function AgeCalculatorPage() {
                 </div>
               )}
 
-              {/* Sonuç */}
               {result && (
                 <div className="space-y-4" aria-live="polite">
                   <div className="text-center p-4 rounded-lg bg-emerald-50 border border-emerald-200">

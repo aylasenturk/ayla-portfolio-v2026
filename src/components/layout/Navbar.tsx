@@ -1,5 +1,3 @@
-"use client";
-
 import { Menu, Github, Linkedin, Twitter, Sun, Moon } from "lucide-react";
 
 interface NavbarProps {

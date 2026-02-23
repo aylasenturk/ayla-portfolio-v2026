@@ -19,48 +19,55 @@ Kullanıcı belirli bir çıktı istediğinde (diyagramlar, kod, belgeler), önc
 ## Build & Dev Commands
 
 ```bash
-npm run dev       # Development server at localhost:3000
-npm run build     # Static export build → out/ directory
+npm run dev       # Vite dev server (localhost:5173)
+npm run build     # TypeScript check + Vite build → dist/ directory
+npm run preview   # Serve production build locally
 npm run lint      # ESLint
-npm start         # Serve production build (requires non-static server)
 ```
 
 No test framework is configured.
 
 ## Architecture
 
-This is a **static portfolio site** for Ayla Senturk, built with Next.js 15 App Router and configured for static export (`output: "export"` in next.config.ts). The `out/` directory contains the deployable static files.
+This is a **static portfolio site** for Ayla Senturk, built with Vite + React + react-router-dom. The `dist/` directory contains the deployable static files.
 
 ### Tech Stack
-- Next.js 15 (App Router, static export)
+- Vite 6 (build tool)
 - React 19, TypeScript (strict mode)
+- react-router-dom 7 (client-side routing)
 - Tailwind CSS v4 (via `@tailwindcss/postcss` plugin)
 - Lucide React for icons
-- `clsx` for conditional classnames (utility: `cn()` in `src/lib/utils.ts`)
+- `clsx` for conditional classnames
 
 ### Layout Architecture
 
 The app uses a single client-side shell for all pages:
 
-`layout.tsx` → `MainLayout` (client component) → `Sidebar` + `Navbar` + content + `Footer`
+`main.tsx` → `BrowserRouter` → `App.tsx` → `MainLayout` → `Sidebar` + `Navbar` + `<Routes>` + `Footer`
 
-- **MainLayout** (`src/components/layout/MainLayout.tsx`): The `"use client"` wrapper that manages sidebar open/close state. All layout components live in `src/components/layout/`.
+- **App.tsx** (`src/App.tsx`): Route definitions wrapping all pages inside MainLayout.
+- **MainLayout** (`src/components/layout/MainLayout.tsx`): Manages sidebar open/close and dark mode state. All layout components live in `src/components/layout/`.
 - **Navigation**: Defined centrally in `src/lib/navigation.ts` as `NavGroup[]`. Add new pages/tools here to have them appear in the sidebar.
 
-### Two Types of Pages
+### Page Structure
 
-1. **Content pages** (server components): `projeler`, `makaleler`, `iletisim`, `ozgecmis` — static data rendered at build time with `metadata` exports for SEO.
-2. **Interactive tool pages** (`"use client"`): Under `src/app/araclar/` — Pomodoro, Gorev Takipcisi, Tarih Secici, Sicaklik Donusturucu, Yas Hesaplayici. These are self-contained client components with local state only (no shared state management).
+All pages live in `src/pages/` as standalone React components:
+
+- **Content pages**: `HomePage`, `ProjectsPage`, `ArticlesPage`, `ContactPage`, `ResumePage`
+- **Interactive tool pages**: `PomodoroPage`, `TaskTrackerPage`, `DatePickerPage`, `TemperatureConverterPage`, `AgeCalculatorPage` — self-contained components with local state only.
+
+Routes are defined in `src/App.tsx`.
 
 ### Design System
 
-**Important**: The actual theme lives in `src/app/globals.css` using Tailwind v4's `@theme` directive — NOT in `tailwind.config.ts` (which contains a legacy config and is not the source of truth for colors).
+**Important**: The theme lives in `src/index.css` using Tailwind v4's `@theme` directive.
 
 Key CSS tokens defined in `@theme`:
 - Colors: `primary-50` through `primary-900` (blue scale), `surface`, `surface-alt`, `surface-hover`, `text-primary`, `text-secondary`, `text-muted`, `border`, `border-light`
 - Fonts: `--font-sans` (Inter), `--font-mono` (JetBrains Mono)
+- Dark mode: `html[data-theme="dark"]` overrides in `@layer base`
 
-Reusable component classes defined in `@layer components` in globals.css:
+Reusable component classes defined in `@layer components` in index.css:
 - Layout: `.card`, `.card-header`, `.card-body`, `.card-footer`
 - Buttons: `.btn`, `.btn-primary`, `.btn-outline`, `.btn-success`, `.btn-warning`, `.btn-danger`, `.btn-ghost`, `.btn-icon`
 - Forms: `.input`, `.select`, `.label`
@@ -71,7 +78,7 @@ Use `PageHeader` component (`src/components/ui/PageHeader.tsx`) for page titles 
 
 ### Path Alias
 
-`@/*` maps to `./src/*` (configured in tsconfig.json).
+`@/*` maps to `./src/*` (configured in tsconfig.json and vite.config.ts).
 
 ### Language
 

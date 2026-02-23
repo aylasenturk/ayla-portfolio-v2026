@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { ArrowRightLeft, AlertCircle } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
@@ -35,7 +33,6 @@ const FORMULAS = [
 function convertTemperature(value: number, from: Unit, to: Unit): number {
   if (from === to) return value;
 
-  // Önce Celsius'a çevir
   let celsius: number;
   switch (from) {
     case "celsius":
@@ -49,7 +46,6 @@ function convertTemperature(value: number, from: Unit, to: Unit): number {
       break;
   }
 
-  // Celsius'tan hedef birime çevir
   switch (to) {
     case "celsius":
       return celsius;
@@ -152,7 +148,6 @@ export default function TemperatureConverterPage() {
                 Dönüştür
               </button>
 
-              {/* Hata */}
               {error && (
                 <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 text-red-700 border border-red-200">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -160,7 +155,6 @@ export default function TemperatureConverterPage() {
                 </div>
               )}
 
-              {/* Sonuç */}
               {result && (
                 <div
                   className="text-center p-4 rounded-lg bg-emerald-50 border border-emerald-200"

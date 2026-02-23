@@ -21,10 +21,12 @@ Backend (C#/.NET) katmanını tamamen çöpe atmak ve projeyi %100 Static Web Ap
 ## Zorluk Derecesi: Orta
 
 **Neden zor değil?**
+
 - Çünkü zaten karmaşık bir Backend mantığın, veritabanı sorguların yok.
 - Mevcut JavaScript kodlarını React component'leri içine taşıyacaksın.
 
 **Neden kolay da değil?**
+
 - jQuery ve Bootstrap bağımlılıklarını React mantığına (State/Props) çevirmen gerekecek.
 - `_Layout.cshtml` yapısını React Router ve Layout Component yapısına dönüştürmelisin.
 - Gereksiz "Admin Template" kodlarını temizleyip sadece ihtiyacın olan CSS'leri almalısın.
@@ -56,10 +58,10 @@ npm create vite@latest ayla-portfolio --template react
 
 Her bir `.cshtml` dosyan bir React Component olacak.
 
-| Eski (.NET)                        | Yeni (React)                  |
-|------------------------------------|-------------------------------|
-| `Views/Portfolio/Index.cshtml`     | `src/pages/Home.jsx`          |
-| `Views/Tools/Pomodoro.cshtml`      | `src/pages/tools/Pomodoro.jsx`|
+| Eski (.NET)                    | Yeni (React)                   |
+| ------------------------------ | ------------------------------ |
+| `Views/Portfolio/Index.cshtml` | `src/pages/Home.jsx`           |
+| `Views/Tools/Pomodoro.cshtml`  | `src/pages/tools/Pomodoro.jsx` |
 
 ### 5. JavaScript Mantığını React Hook'larına Çevirme (EN ONEMLI KISIM)
 

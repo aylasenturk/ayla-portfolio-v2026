@@ -21,9 +21,9 @@ npm install
 npm run dev
 ```
 
-Tarayıcıda açın: **http://localhost:3000**
+Tarayıcıda açın: **http://localhost:5173**
 
-Dosya değişiklikleri otomatik olarak yansır (Hot Reload).
+Dosya değişiklikleri otomatik olarak yansır (Vite HMR — Hot Module Replacement).
 
 ## Üretim Derlemesi (Build)
 
@@ -31,54 +31,58 @@ Dosya değişiklikleri otomatik olarak yansır (Hot Reload).
 npm run build
 ```
 
-Bu komut `out/` dizinine statik HTML/CSS/JS dosyalarını oluşturur. Herhangi bir statik hosting servisine (Vercel, Netlify, GitHub Pages vb.) yüklenebilir.
+Bu komut önce TypeScript tip kontrolü (`tsc --noEmit`) yapar, ardından `dist/` dizinine statik HTML/CSS/JS dosyalarını oluşturur. Herhangi bir statik hosting servisine (Vercel, Netlify, GitHub Pages vb.) yüklenebilir.
 
-## Lint (Kod Kontrolü)
+## Önizleme (Build Sonrası)
 
 ```bash
-npm run lint
+npm run preview
 ```
 
-ESLint ile kod kalitesi kontrolü yapar.
+`dist/` dizinindeki build çıktısını yerel sunucuda önizler.
 
 ## Proje Yapısı (Özet)
 
 ```
 src/
-├── app/                    # Sayfalar (Next.js App Router)
-│   ├── page.tsx            # Ana Sayfa
-│   ├── layout.tsx          # Kök Layout
-│   ├── globals.css         # Tema ve Tasarım Sistemi
-│   ├── projeler/           # Projeler Sayfası
-│   ├── makaleler/          # Makaleler Sayfası
-│   ├── iletisim/           # İletişim Formu
-│   ├── ozgecmis/           # Özgeçmiş (CV)
-│   └── araclar/            # İnteraktif Araçlar
-│       ├── pomodoro/       #   Pomodoro Zamanlayıcı
-│       ├── gorev-takipcisi/#   Görev Takipçisi
-│       ├── tarih-secici/   #   Tarih Seçici
-│       ├── sicaklik-donusturucu/ # Sıcaklık Dönüştürücü
-│       └── yas-hesaplayici/#   Yaş Hesaplayıcı
-├── components/             # Yeniden Kullanılabilir Bileşenler
-│   ├── layout/             #   MainLayout, Navbar, Sidebar, Footer
-│   └── ui/                 #   PageHeader
-└── lib/                    # Yardımcı Modüller
-    └── navigation.ts       #   Navigasyon yapılandırması
+├── main.tsx               # Uygulama giriş noktası (ReactDOM, BrowserRouter)
+├── App.tsx                # Rota tanımları (react-router-dom Routes)
+├── index.css              # Tema ve Tasarım Sistemi (Tailwind CSS v4)
+├── vite-env.d.ts          # Vite tip bildirimi
+├── pages/                 # Sayfa bileşenleri
+│   ├── HomePage.tsx       #   Ana Sayfa
+│   ├── ProjectsPage.tsx   #   Projeler
+│   ├── ArticlesPage.tsx   #   Makaleler
+│   ├── ContactPage.tsx    #   İletişim Formu
+│   ├── ResumePage.tsx     #   Özgeçmiş (CV)
+│   ├── PomodoroPage.tsx   #   Pomodoro Zamanlayıcı
+│   ├── TaskTrackerPage.tsx#   Görev Takipçisi
+│   ├── DatePickerPage.tsx #   Tarih Seçici
+│   ├── TemperatureConverterPage.tsx # Sıcaklık Dönüştürücü
+│   └── AgeCalculatorPage.tsx #  Yaş Hesaplayıcı
+├── components/            # Yeniden Kullanılabilir Bileşenler
+│   ├── layout/            #   MainLayout, Navbar, Sidebar, Footer
+│   └── ui/                #   PageHeader
+└── lib/                   # Yardımcı Modüller
+    └── navigation.ts      #   Navigasyon yapılandırması
 ```
 
 ## Teknoloji Yığını
 
 | Teknoloji | Sürüm | Açıklama |
 |-----------|-------|----------|
-| Next.js | 15 | React framework (App Router, statik export) |
+| Vite | 6 | Hızlı geliştirme sunucusu ve build aracı |
 | React | 19 | UI kütüphanesi |
 | TypeScript | 5.7 | Tip güvenliği |
+| react-router-dom | 7 | İstemci taraflı yönlendirme (SPA) |
 | Tailwind CSS | 4 | Utility-first CSS framework |
 | Lucide React | 0.468 | SVG ikon kütüphanesi |
 | clsx | 2.1 | Koşullu CSS sınıf birleştirme |
 
 ## Notlar
 
-- Proje `output: "export"` ile yapılandırılmıştır — sunucu tarafı kod çalışmaz, tamamen statik çıktı üretir.
+- Proje %100 statik SPA'dır — sunucu tarafı kod çalışmaz, `dist/` dizinine saf HTML/CSS/JS üretir.
 - Tüm arayüz metinleri Türkçedir.
-- Tasarım sistemi `src/app/globals.css` içindeki `@theme` direktifinde tanımlıdır (`tailwind.config.ts` değil).
+- Tasarım sistemi `src/index.css` içindeki `@theme` direktifinde tanımlıdır.
+- Dark mode, `html[data-theme="dark"]` ile CSS değişken override'ları kullanır, tercih `localStorage`'da saklanır.
+- Path alias: `@/*` → `./src/*` (hem `tsconfig.json` hem `vite.config.ts`'de tanımlı).

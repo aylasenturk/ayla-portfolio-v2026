@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
 import { Globe, Code2, Building, ShoppingCart, Users, Box, Calendar } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
-
-export const metadata: Metadata = {
-  title: "Projeler",
-};
 
 const projects = [
   {
@@ -78,7 +73,7 @@ const projects = [
       "Bu site! İnteraktif UI bileşenleri, üretkenlik araçları ve API entegrasyonları içeren bir showcase projesi.",
     tags: [
       { label: "React", variant: "badge-primary" },
-      { label: "Next.js", variant: "badge-neutral" },
+      { label: "Vite", variant: "badge-neutral" },
       { label: "Tailwind", variant: "badge-info" },
     ],
     icon: Box,
