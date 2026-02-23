@@ -1,74 +1,78 @@
-# Ayla Senturk - Kisisel Portfolio
+# Ayla Şentürk — Kişisel Portfolyo
 
-Ayla Senturk'un kisisel portfolio web sitesi. React, Next.js ve Tailwind CSS ile olusturulmustur.
+Ayla Şentürk'ün kişisel portfolyo web sitesi. **Vite + React + TypeScript + Tailwind CSS v4** ile oluşturulmuştur.
 
 ## Teknolojiler
 
-- **Framework:** Next.js 15 (App Router)
-- **UI:** React 19 + TypeScript
-- **Stil:** Tailwind CSS v4
-- **Ikonlar:** Lucide React
-- **Deploy:** Statik export (GitHub Pages / Vercel)
+| Katman | Teknoloji |
+|---|---|
+| Framework | React 19 + TypeScript |
+| Build Aracı | Vite 6 |
+| Stil | Tailwind CSS v4 |
+| Routing | React Router DOM v7 |
+| İkonlar | Lucide React |
 
 ## Kurulum
 
 ```bash
-# Bagimliliklari yukle
+# Bağımlılıkları yükle
 npm install
 
-# Gelistirme sunucusunu baslat
+# Geliştirme sunucusunu başlat
 npm run dev
+# http://localhost:5173 adresinden eriş
 
-# http://localhost:3000 adresinden eris
-```
-
-## Build & Deploy
-
-```bash
-# Statik site olustur
+# TypeScript tip kontrolü
 npm run build
 
-# out/ klasorundeki dosyalar deploy edilebilir
+# Statik build önizleme
+npm run preview
 ```
 
-## Proje Yapisi
+## Proje Yapısı
 
 ```
 src/
-  app/                    # Next.js App Router sayfalari
-    page.tsx              # Ana Sayfa
-    layout.tsx            # Root Layout
-    projeler/             # Projeler sayfasi
-    makaleler/            # Makaleler sayfasi
-    iletisim/             # Iletisim sayfasi
-    ozgecmis/             # Ozgecmis sayfasi
-    araclar/
-      pomodoro/           # Pomodoro Zamanlayici
-      gorev-takipcisi/    # Gorev Takipcisi
-      tarih-secici/       # Tarih Secici
-      sicaklik-donusturucu/ # Sicaklik Donusturucu
-      yas-hesaplayici/    # Yas Hesaplayici
+  hooks/
+    usePomodoro.ts          # Pomodoro zamanlayıcı business logic
+    useTaskTracker.ts       # Görev takipçisi business logic
   components/
-    layout/               # Sidebar, Navbar, Footer
-    ui/                   # Yeniden kullanilabilir UI bilesenleri
-  lib/                    # Yardimci fonksiyonlar ve veri
+    layout/                 # Sidebar, Navbar, Footer, MainLayout
+    ui/                     # Yeniden kullanılabilir UI bileşenleri
+  pages/
+    HomePage.tsx
+    ProjectsPage.tsx
+    ArticlesPage.tsx
+    ContactPage.tsx
+    ResumePage.tsx
+    PomodoroPage.tsx        # Dumb component — logic hook'ta
+    TaskTrackerPage.tsx     # Dumb component — logic hook'ta
+  lib/
+    navigation.ts           # Navigasyon yapısı
 ```
 
-## Ozellikler
+## Sayfalar
 
-- WCAG 2.1 erisebilirlik standartlari
-- Responsive tasarim (mobil uyumlu)
-- Statik site generation (SSG) ile hizli yuklenme
-- 5 interaktif uretkenlik araci
-- TypeScript ile tip guvenligi
+**Portfolio:**
+- Ana Sayfa, Projeler, Makaleler, İletişim, Özgeçmiş
 
-## Yapimci
+**Üretkenlik Araçları (Showcase):**
+- Pomodoro Zamanlayıcı, Görev Takipçisi
 
-**Ayla Senturk** - Bilgisayar Programcisi | Web Gelistirici
+## Özellikler
+
+- WCAG 2.1 / Axe erişilebilirlik standartları (`aria-pressed` string değerler)
+- Responsive tasarım
+- Custom Hook mimarisi (UI / Logic ayrımı)
+- TypeScript ile tam tip güvenliği
+
+## Yapımcı
+
+**Ayla Şentürk** — Bilgisayar Programcısı | Web Geliştirici
 
 - GitHub: [@aylasenturk](https://github.com/aylasenturk)
-- LinkedIn: [Ayla Senturk](https://www.linkedin.com/in/ayla-%C5%9Fent%C3%BCrk-9828163a9)
+- LinkedIn: [Ayla Şentürk](https://www.linkedin.com/in/ayla-%C5%9Fent%C3%BCrk-9828163a9)
 
-**Mentor:** Ogr. Gor. Dr. Ufuk Tanyeri
+**Mentor:** Öğr. Gör. Dr. Ufuk Tanyeri
 
-**Katkilar:** Enes Can Ak
+**Katkılar:** Enes Can Ak
