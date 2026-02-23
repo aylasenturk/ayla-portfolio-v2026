@@ -41,8 +41,8 @@ function openPanel(key) {
   const c = document.getElementById("detail-content");
   let html = `<h2>${key.split("/").pop()}</h2>`;
   html += `<div class="file-path">${key}</div>`;
-  html += `<p style="font-size:0.85rem;color:var(--text-main);margin-bottom:0.75rem">${info.desc}</p>`;
-  html += `<p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:1rem">${info.meta}</p>`;
+  html += `<p class="detail-desc">${info.desc}</p>`;
+  html += `<p class="detail-meta">${info.meta}</p>`;
   html += `<div class="section-title">Export</div><span class="tag tag-fn">${info.export}</span>`;
 
   if (info.types.length) {

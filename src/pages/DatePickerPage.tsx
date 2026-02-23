@@ -147,10 +147,11 @@ export default function DatePickerPage() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-0.5" role="grid" aria-label="Takvim günleri">
+              <div className="grid grid-cols-7 gap-0.5" aria-label="Takvim günleri">
                 {calendarDays.map((day, index) => (
                   <button
                     key={index}
+                    type="button"
                     onClick={() => day.isCurrentMonth && selectDay(day.date)}
                     disabled={!day.isCurrentMonth}
                     className={clsx(
@@ -166,10 +167,8 @@ export default function DatePickerPage() {
                       day.isSelected &&
                         "bg-primary-600 text-white font-medium"
                     )}
-                    role="gridcell"
-                    tabIndex={day.isCurrentMonth ? 0 : -1}
-                    aria-selected={day.isSelected}
-                    aria-disabled={!day.isCurrentMonth}
+                    aria-label={`${day.day}`}
+                    aria-current={day.isToday ? "date" : undefined}
                   >
                     {day.day}
                   </button>

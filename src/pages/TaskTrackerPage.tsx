@@ -131,7 +131,7 @@ export default function TaskTrackerPage() {
                         ? "bg-primary-600 text-white"
                         : "bg-surface text-text-secondary hover:bg-surface-hover"
                     )}
-                    aria-pressed={filter === f.key}
+                    aria-pressed={filter === f.key || undefined}
                   >
                     {f.label}
                   </button>

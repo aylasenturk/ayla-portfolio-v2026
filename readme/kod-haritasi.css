@@ -120,6 +120,10 @@ svg text { -webkit-user-select: none; user-select: none; cursor: default; }
   opacity: 0; transition: opacity 0.15s;
 }
 
+/* ── Panel Icerik ── */
+#detail-panel .detail-desc { font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.75rem; }
+#detail-panel .detail-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem; }
+
 /* ── Yardimci ── */
 .select-label { font-size: 0.8rem; color: var(--text-muted); }
 .legend-dot-folder { background: var(--accent); }
