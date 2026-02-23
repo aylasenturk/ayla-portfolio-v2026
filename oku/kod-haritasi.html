@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kod Haritası — ayla-portfolio-v2026</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: #38bdf8;
+    }
+    .subtitle {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    #chart { overflow-x: auto; }
+    svg text { user-select: none; }
+  </style>
+</head>
+<body>
+  <h1>ayla-portfolio-v2026 — Kod Haritası</h1>
+  <p class="subtitle">Next.js 15 &middot; React 19 &middot; TypeScript &middot; Tailwind CSS v4 &middot; Toplam 2.900 satır</p>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div> Klasör</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Sayfa (page.tsx)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div> Bileşen</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div> Yardımcı / Konfigürasyon</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f472b6"></div> Stil (CSS)</div>
+  </div>
+  <div id="chart"></div>
+
+  <script>
+    const data = {
+      name: "src",
+      children: [
+        {
+          name: "app",
+          children: [
+            { name: "page.tsx", desc: "Ana Sayfa", lines: 152, type: "page" },
+            { name: "layout.tsx", desc: "Kök Layout (metadata + MainLayout)", lines: 50, type: "config" },
+            { name: "globals.css", desc: "Tema & Tasarım Sistemi (@theme, .card, .btn, .badge...)", lines: 186, type: "style" },
+            {
+              name: "projeler",
+              children: [
+                { name: "page.tsx", desc: "Projeler Sayfası", lines: 130, type: "page" }
+              ]
+            },
+            {
+              name: "makaleler",
+              children: [
+                { name: "page.tsx", desc: "Makaleler Sayfası", lines: 104, type: "page" }
+              ]
+            },
+            {
+              name: "iletisim",
+              children: [
+                { name: "page.tsx", desc: "İletişim Formu", lines: 225, type: "page" }
+              ]
+            },
+            {
+              name: "ozgecmis",
+              children: [
+                { name: "page.tsx", desc: "Özgeçmiş (CV) Sayfası", lines: 515, type: "page" }
+              ]
+            },
+            {
+              name: "araclar",
+              children: [
+                {
+                  name: "pomodoro",
+                  children: [
+                    { name: "page.tsx", desc: "Pomodoro Zamanlayıcı", lines: 285, type: "page" }
+                  ]
+                },
+                {
+                  name: "gorev-takipcisi",
+                  children: [
+                    { name: "page.tsx", desc: "Görev Takipçisi (localStorage)", lines: 212, type: "page" }
+                  ]
+                },
+                {
+                  name: "tarih-secici",
+                  children: [
+                    { name: "page.tsx", desc: "Tarih Seçici Takvim", lines: 230, type: "page" }
+                  ]
+                },
+                {
+                  name: "sicaklik-donusturucu",
+                  children: [
+                    { name: "page.tsx", desc: "Sıcaklık Dönüştürücü (C/F/K)", lines: 227, type: "page" }
+                  ]
+                },
+                {
+                  name: "yas-hesaplayici",
+                  children: [
+                    { name: "page.tsx", desc: "Yaş Hesaplayıcı + Burç", lines: 284, type: "page" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "components",
+          children: [
+            {
+              name: "layout",
+              children: [
+                { name: "MainLayout.tsx", desc: "Ana kabuk (Sidebar + Navbar + Footer)", lines: 32, type: "component" },
+                { name: "Navbar.tsx", desc: "Üst navigasyon çubuğu", lines: 55, type: "component" },
+                { name: "Sidebar.tsx", desc: "Yan menü (NavGroup'lardan oluşur)", lines: 98, type: "component" },
+                { name: "Footer.tsx", desc: "Alt bilgi", lines: 47, type: "component" }
+              ]
+            },
+            {
+              name: "ui",
+              children: [
+                { name: "PageHeader.tsx", desc: "Breadcrumb başlık bileşeni", lines: 16, type: "component" }
+              ]
+            }
+          ]
+        },
+        {
+          name: "lib",
+          children: [
+            { name: "navigation.ts", desc: "Merkezi navigasyon yapılandırması (NavGroup[])", lines: 52, type: "config" }
+          ]
+        }
+      ]
+    };
+
+    const typeColors = {
+      page: "#a78bfa",
+      component: "#34d399",
+      config: "#fbbf24",
+      style: "#f472b6",
+      folder: "#38bdf8"
+    };
+
+    const nodeSize = 22;
+    const root = d3.hierarchy(data).eachBefore((i => d => d.index = i++)(0));
+    const nodes = root.descendants();
+    const width = 960;
+    const height = (nodes.length + 1) * nodeSize;
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [-nodeSize / 2, -nodeSize * 3 / 2, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
+
+    // Bağlantı çizgileri
+    svg.append("g")
+      .attr("fill", "none")
+      .attr("stroke", "#334155")
+      .attr("stroke-width", 1)
+      .selectAll("path")
+      .data(root.links())
+      .join("path")
+      .attr("d", d => `
+        M${d.source.depth * nodeSize},${d.source.index * nodeSize}
+        V${d.target.index * nodeSize}
+        h${nodeSize}
+      `);
+
+    // Düğümler
+    const node = svg.append("g")
+      .selectAll("g")
+      .data(nodes)
+      .join("g")
+      .attr("transform", d => `translate(0,${d.index * nodeSize})`);
+
+    // Daireler
+    node.append("circle")
+      .attr("cx", d => d.depth * nodeSize)
+      .attr("r", d => d.children ? 4 : 3)
+      .attr("fill", d => d.children ? typeColors.folder : typeColors[d.data.type] || "#999")
+      .attr("stroke", d => d.children ? "#38bdf8" : "none")
+      .attr("stroke-width", d => d.children ? 1.5 : 0)
+      .attr("fill-opacity", d => d.children ? 0.3 : 1);
+
+    // Dosya / klasör isimleri
+    node.append("text")
+      .attr("dy", "0.32em")
+      .attr("x", d => d.depth * nodeSize + 10)
+      .attr("fill", d => d.children ? "#38bdf8" : "#e2e8f0")
+      .attr("font-size", d => d.children ? "13px" : "12px")
+      .attr("font-weight", d => d.children ? "600" : "400")
+      .attr("font-family", "'Segoe UI', system-ui, sans-serif")
+      .text(d => d.data.name);
+
+    // Açıklama
+    node.filter(d => d.data.desc)
+      .append("text")
+      .attr("dy", "0.32em")
+      .attr("x", d => d.depth * nodeSize + 10 + d.data.name.length * 7.5 + 12)
+      .attr("fill", "#64748b")
+      .attr("font-size", "11px")
+      .attr("font-family", "'Segoe UI', system-ui, sans-serif")
+      .text(d => d.data.desc);
+
+    // Satır sayısı
+    node.filter(d => d.data.lines)
+      .append("text")
+      .attr("dy", "0.32em")
+      .attr("x", 700)
+      .attr("text-anchor", "end")
+      .attr("fill", d => typeColors[d.data.type] || "#94a3b8")
+      .attr("font-size", "11px")
+      .attr("font-family", "'JetBrains Mono', 'Cascadia Code', monospace")
+      .attr("opacity", 0.8)
+      .text(d => `${d.data.lines} satır`);
+
+    // Satır sayısı bar
+    node.filter(d => d.data.lines)
+      .append("rect")
+      .attr("x", 710)
+      .attr("y", -4)
+      .attr("height", 8)
+      .attr("width", d => (d.data.lines / 515) * 150)
+      .attr("rx", 2)
+      .attr("fill", d => typeColors[d.data.type] || "#94a3b8")
+      .attr("opacity", 0.25);
+
+    // Tooltip
+    node.append("title")
+      .text(d => {
+        const path = d.ancestors().reverse().map(d => d.data.name).join("/");
+        return d.data.desc ? `${path}\n${d.data.desc}${d.data.lines ? `\n${d.data.lines} satır` : ""}` : path;
+      });
+  </script>
+</body>
+</html>

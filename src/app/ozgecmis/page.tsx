@@ -6,7 +6,6 @@ import {
   Twitter,
   MapPin,
   Mail,
-  Phone,
   Globe,
   Server,
   Database,
@@ -217,13 +216,13 @@ export default function ResumePage() {
                   ayla.senturk35@gmail.com
                 </p>
               </div>
-              <div>
+              {/* <div>
                 <p className="text-xs text-text-muted">Telefon</p>
                 <p className="text-sm flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5 text-text-muted" />
                   0553 153 75 88
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
 
