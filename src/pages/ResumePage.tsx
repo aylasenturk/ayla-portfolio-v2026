@@ -1,3 +1,4 @@
+import type React from "react";
 import {
   Linkedin,
   Github,
@@ -97,7 +98,7 @@ function SkillSection({
             <div className="progress-bar flex-1">
               <div
                 className={`progress-fill ${iconColor.includes("primary") ? "bg-primary-500" : iconColor.includes("emerald") ? "bg-emerald-500" : iconColor.includes("cyan") ? "bg-cyan-500" : "bg-amber-500"}`}
-                style={{ width: `${skill.level}%` }}
+                style={{ width: `${skill.level}%` } as React.CSSProperties}
               />
             </div>
             <span className="text-xs text-text-muted w-16 text-right flex-shrink-0">

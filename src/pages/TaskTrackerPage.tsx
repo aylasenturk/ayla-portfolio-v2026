@@ -1,83 +1,28 @@
-import { useState, useEffect } from "react";
 import { Plus, Trash2, ClipboardList } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import { clsx } from "clsx";
+import { useTaskTracker, type FilterType } from "@/hooks/useTaskTracker";
 
-interface Task {
-  id: string;
-  title: string;
-  status: "todo" | "done";
-}
-
-type FilterType = "all" | "todo" | "done";
-
-const STORAGE_KEY = "tasks";
-
-function loadTasks(): Task[] {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveTasks(tasks: Task[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-}
+const FILTERS: { key: FilterType; label: string }[] = [
+  { key: "all", label: "Tümü" },
+  { key: "todo", label: "Devam Eden" },
+  { key: "done", label: "Tamamlanan" },
+];
 
 export default function TaskTrackerPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [input, setInput] = useState("");
-  const [filter, setFilter] = useState<FilterType>("all");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const {
+    input,
+    filter,
+    filteredTasks,
+    stats,
+    setInput,
+    setFilter,
+    addTask,
+    toggleTask,
+    removeTask,
+  } = useTaskTracker();
 
-  useEffect(() => {
-    setTasks(loadTasks());
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded) saveTasks(tasks);
-  }, [tasks, isLoaded]);
-
-  function addTask() {
-    const trimmed = input.trim();
-    if (!trimmed) return;
-
-    setTasks((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), title: trimmed, status: "todo" },
-    ]);
-    setInput("");
-  }
-
-  function toggleTask(id: string) {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? { ...task, status: task.status === "todo" ? "done" : "todo" }
-          : task
-      )
-    );
-  }
-
-  function removeTask(id: string) {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
-  }
-
-  const filteredTasks = tasks.filter(
-    (t) => filter === "all" || t.status === filter
-  );
-
-  const totalCount = tasks.length;
-  const doneCount = tasks.filter((t) => t.status === "done").length;
-  const pendingCount = totalCount - doneCount;
-
-  const filters: { key: FilterType; label: string }[] = [
-    { key: "all", label: "Tümü" },
-    { key: "todo", label: "Devam Eden" },
-    { key: "done", label: "Tamamlanan" },
-  ];
+  const { totalCount, doneCount, pendingCount } = stats;
 
   return (
     <div>
@@ -121,7 +66,7 @@ export default function TaskTrackerPage() {
                 role="group"
                 aria-label="Görev filtreleri"
               >
-                {filters.map((f) => (
+                {FILTERS.map((f) => (
                   <button
                     key={f.key}
                     onClick={() => setFilter(f.key)}
@@ -131,7 +76,7 @@ export default function TaskTrackerPage() {
                         ? "bg-primary-600 text-white"
                         : "bg-surface text-text-secondary hover:bg-surface-hover"
                     )}
-                    aria-pressed={filter === f.key || undefined}
+                    aria-pressed={filter === f.key ? "true" : "false"}
                   >
                     {f.label}
                   </button>
@@ -164,6 +109,7 @@ export default function TaskTrackerPage() {
                             "line-through opacity-60 text-text-muted"
                         )}
                         aria-label={`Görevi ${task.status === "todo" ? "tamamla" : "geri al"}: ${task.title}`}
+                        aria-pressed={task.status === "done" ? "true" : "false"}
                       >
                         {task.title}
                       </button>

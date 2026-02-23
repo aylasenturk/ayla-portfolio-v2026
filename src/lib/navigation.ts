@@ -6,9 +6,6 @@ import {
   User,
   Timer,
   ListChecks,
-  Calendar,
-  Thermometer,
-  Calculator,
   type LucideIcon,
 } from "lucide-react";
 
@@ -39,14 +36,6 @@ export const navigation: NavGroup[] = [
     items: [
       { label: "Pomodoro Zamanlayıcı", href: "/araclar/pomodoro", icon: Timer },
       { label: "Görev Takipçisi", href: "/araclar/gorev-takipcisi", icon: ListChecks },
-      { label: "Tarih Seçici", href: "/araclar/tarih-secici", icon: Calendar },
-    ],
-  },
-  {
-    title: "Hesaplayıcılar",
-    items: [
-      { label: "Sıcaklık Dönüştürücü", href: "/araclar/sicaklik-donusturucu", icon: Thermometer },
-      { label: "Yaş Hesaplayıcı", href: "/araclar/yas-hesaplayici", icon: Calculator },
     ],
   },
 ];

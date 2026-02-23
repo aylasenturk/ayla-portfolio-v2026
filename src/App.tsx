@@ -7,9 +7,6 @@ import ContactPage from "@/pages/ContactPage";
 import ResumePage from "@/pages/ResumePage";
 import PomodoroPage from "@/pages/PomodoroPage";
 import TaskTrackerPage from "@/pages/TaskTrackerPage";
-import DatePickerPage from "@/pages/DatePickerPage";
-import TemperatureConverterPage from "@/pages/TemperatureConverterPage";
-import AgeCalculatorPage from "@/pages/AgeCalculatorPage";
 
 export default function App() {
   return (
@@ -22,9 +19,6 @@ export default function App() {
         <Route path="/ozgecmis" element={<ResumePage />} />
         <Route path="/araclar/pomodoro" element={<PomodoroPage />} />
         <Route path="/araclar/gorev-takipcisi" element={<TaskTrackerPage />} />
-        <Route path="/araclar/tarih-secici" element={<DatePickerPage />} />
-        <Route path="/araclar/sicaklik-donusturucu" element={<TemperatureConverterPage />} />
-        <Route path="/araclar/yas-hesaplayici" element={<AgeCalculatorPage />} />
       </Routes>
     </MainLayout>
   );
