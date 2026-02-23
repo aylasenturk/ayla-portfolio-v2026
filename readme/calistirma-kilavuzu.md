@@ -21,7 +21,7 @@ npm install
 npm run dev
 ```
 
-Tarayıcıda açın: **http://localhost:5173**
+Tarayıcıda açın: **http://localhost:port_number**
 
 Dosya değişiklikleri otomatik olarak yansır (Vite HMR — Hot Module Replacement).
 
