@@ -1,0 +1,52 @@
+import {
+  Home,
+  FolderOpen,
+  BookOpen,
+  Mail,
+  User,
+  Timer,
+  ListChecks,
+  Calendar,
+  Thermometer,
+  Calculator,
+  type LucideIcon,
+} from "lucide-react";
+
+export interface NavItem {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+}
+
+export interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+export const navigation: NavGroup[] = [
+  {
+    title: "Portfolio",
+    items: [
+      { label: "Ana Sayfa", href: "/", icon: Home },
+      { label: "Projeler", href: "/projeler", icon: FolderOpen },
+      { label: "Makaleler", href: "/makaleler", icon: BookOpen },
+      { label: "İletişim", href: "/iletisim", icon: Mail },
+      { label: "Özgeçmiş", href: "/ozgecmis", icon: User },
+    ],
+  },
+  {
+    title: "Üretkenlik Araçları",
+    items: [
+      { label: "Pomodoro Zamanlayıcı", href: "/araclar/pomodoro", icon: Timer },
+      { label: "Görev Takipçisi", href: "/araclar/gorev-takipcisi", icon: ListChecks },
+      { label: "Tarih Seçici", href: "/araclar/tarih-secici", icon: Calendar },
+    ],
+  },
+  {
+    title: "Hesaplayıcılar",
+    items: [
+      { label: "Sıcaklık Dönüştürücü", href: "/araclar/sicaklik-donusturucu", icon: Thermometer },
+      { label: "Yaş Hesaplayıcı", href: "/araclar/yas-hesaplayici", icon: Calculator },
+    ],
+  },
+];
