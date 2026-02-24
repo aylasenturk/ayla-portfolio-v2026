@@ -1,4 +1,0 @@
-/* Yalnızca D3.js SVG bağlantı çizgileri için zorunlu stiller */
-#chart path { fill: none; stroke: #cbd5e1; stroke-width: 1.5px; }
-html.dark #chart path { stroke: #334155; }
-#chart svg { overflow: visible; }
