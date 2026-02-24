@@ -173,8 +173,6 @@ export default function ForceGraph() {
         .append("circle")
         .attr("r", (d) => getNodeRadius(d.type))
         .attr("fill", (d) => NODE_COLORS[d.type])
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2)
         .attr("opacity", 0.9);
 
       // Dugum etiketleri
