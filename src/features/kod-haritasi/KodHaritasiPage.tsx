@@ -6,8 +6,8 @@ import IndentedTree from "./components/IndentedTree";
 type ViewMode = "graph" | "tree";
 
 const TABS: { key: ViewMode; label: string }[] = [
-  { key: "graph", label: "Graf" },
-  { key: "tree", label: "Agac" },
+  { key: "graph", label: "Yönlendirilmiş Grafik" },
+  { key: "tree", label: "Girintili Ağaç" },
 ];
 
 export default function KodHaritasiPage() {
