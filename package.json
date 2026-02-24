@@ -21,6 +21,8 @@
     "react-router-dom": "^7.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@hint/hint-no-inline-styles": "^1.0.19",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
@@ -29,9 +31,10 @@
     "@typescript-eslint/parser": "^8.56.1",
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.24",
-    "eslint": "^9.0.0",
+    "eslint": "^10.0.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.3.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
