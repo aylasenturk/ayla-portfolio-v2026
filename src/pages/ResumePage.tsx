@@ -257,7 +257,7 @@ export default function ResumePage() {
                 icon={Globe}
                 iconColor="text-primary-600"
                 skills={webSkills}
-                note="Ders projeleri ve portfolio uygulamalarında kullanıldı"
+                note="Ders projeleri ve portfolyo uygulamalarında kullanıldı"
               />
               <SkillSection
                 title="Backend & Sunucu"
@@ -430,11 +430,11 @@ export default function ResumePage() {
             </div>
           </div>
 
-          {/* Portfolio Projesi */}
+          {/* Portfolyo Projesi */}
           <div className="card border-primary-200">
             <div className="card-header bg-primary-600 text-white rounded-t-xl">
               <h2 className="text-base font-semibold flex items-center gap-2">
-                <Star className="w-4 h-4" /> Portfolio Projesi (Bu Site)
+                <Star className="w-4 h-4" /> Portfolyo Projesi (Bu Site)
               </h2>
             </div>
             <div className="card-body">

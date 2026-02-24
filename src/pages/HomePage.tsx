@@ -86,7 +86,7 @@ export default function HomePage() {
                 Hoş Geldiniz!
               </h2>
               <p className="text-text-secondary mb-4 leading-relaxed">
-                Bu web sitesi, Ayla Şentürk&apos;ün portfolio ve UI/UX bileşen
+                Bu web sitesi, Ayla Şentürk&apos;ün portfolyo ve UI/UX bileşen
                 vitrinidir. HTML, CSS ve JavaScript ile oluşturulmuş interaktif
                 bileşenler, üretkenlik araçları ve API entegrasyonları içerir.
               </p>

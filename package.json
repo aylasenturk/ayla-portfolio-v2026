@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Ayla Senturk - Kisisel Portfolio Web Sitesi",
+  "description": "Ayla Senturk - Kisisel Portfolyo Web Sitesi",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

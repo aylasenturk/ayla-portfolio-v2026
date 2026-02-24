@@ -107,7 +107,7 @@ export const codeMapData: CodeMapData = {
       constants: [
         {
           name: "navigation",
-          desc: "NavGroup[] — Portfolio (5 öğe) + Üretkenlik Araçları (2 öğe)",
+          desc: "NavGroup[] — Portfolyo (5 öğe) + Üretkenlik Araçları (2 öğe)",
         },
       ],
     },
