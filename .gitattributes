@@ -1,0 +1,13 @@
+# Tüm dosyaları LF olarak normalize et (Windows CRLF uyarısını engeller)
+* text=auto eol=lf
+
+# Binary dosyalar — dönüştürme yapma
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
