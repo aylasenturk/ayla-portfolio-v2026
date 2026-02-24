@@ -1,0 +1,12 @@
+{
+  "connector": {
+    "name": "local"
+  },
+  "formatters": ["stylish"],
+  "parsers": ["css", "html"],
+  "hints": {
+    "no-inline-styles": ["error", {
+      "requireNoStyleElement": true
+    }]
+  }
+}
