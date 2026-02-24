@@ -149,6 +149,7 @@ export default function ForceGraph() {
         .attr("tabindex", 0)
         .attr("role", "button")
         .attr("aria-label", (d) => `${d.name} — ${NODE_LABELS[d.type]}`)
+        .style("outline", "none")
         .call(
           d3
             .drag<SVGGElement, SimNode>()
