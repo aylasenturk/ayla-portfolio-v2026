@@ -1,3 +1,5 @@
+Markdown
+
 # Projeyi Çalıştırma Kılavuzu
 
 ## Gereksinimler
@@ -10,12 +12,12 @@
 Projeyi klonlayın ve bağımlılıkları yükleyin:
 
 ```bash
-git clone https://github.com/aylasenturk/ayla-portfolio-v2026.git
+git clone [https://github.com/aylasenturk/ayla-portfolio-v2026.git](https://github.com/aylasenturk/ayla-portfolio-v2026.git)
 cd ayla-portfolio-v2026
-npm install
+npm install## Geliştirme Sunucusu
 ```
 
-## Geliştirme Sunucusu
+
 
 ```bash
 npm run dev
@@ -35,6 +37,8 @@ Bu komut önce TypeScript tip kontrolü (`tsc --noEmit`) yapar, ardından `dist/
 
 ## Önizleme (Build Sonrası)
 
+
+
 ```bash
 npm run preview
 ```
@@ -42,6 +46,8 @@ npm run preview
 `dist/` dizinindeki build çıktısını yerel sunucuda önizler.
 
 ## Proje Yapısı (Özet)
+
+Plaintext
 
 ```
 src/
@@ -56,33 +62,39 @@ src/
 │   ├── ContactPage.tsx    #   İletişim Formu
 │   ├── ResumePage.tsx     #   Özgeçmiş (CV)
 │   ├── PomodoroPage.tsx   #   Pomodoro Zamanlayıcı
-│   ├── TaskTrackerPage.tsx#   Görev Takipçisi
-│   ├── DatePickerPage.tsx #   Tarih Seçici
-│   ├── TemperatureConverterPage.tsx # Sıcaklık Dönüştürücü
-│   └── AgeCalculatorPage.tsx #  Yaş Hesaplayıcı
+│   └── TaskTrackerPage.tsx#   Görev Takipçisi
 ├── components/            # Yeniden Kullanılabilir Bileşenler
 │   ├── layout/            #   MainLayout, Navbar, Sidebar, Footer
 │   └── ui/                #   PageHeader
+├── hooks/                 # Custom React Hook'ları (İş Mantığı)
+│   ├── usePomodoro.ts     #   Pomodoro zamanlayıcı mantığı
+│   └── useTaskTracker.ts  #   Görev takipçisi CRUD işlemleri
 └── lib/                   # Yardımcı Modüller
     └── navigation.ts      #   Navigasyon yapılandırması
 ```
 
 ## Teknoloji Yığını
 
-| Teknoloji | Sürüm | Açıklama |
-|-----------|-------|----------|
-| Vite | 6 | Hızlı geliştirme sunucusu ve build aracı |
-| React | 19 | UI kütüphanesi |
-| TypeScript | 5.7 | Tip güvenliği |
-| react-router-dom | 7 | İstemci taraflı yönlendirme (SPA) |
-| Tailwind CSS | 4 | Utility-first CSS framework |
-| Lucide React | 0.468 | SVG ikon kütüphanesi |
-| clsx | 2.1 | Koşullu CSS sınıf birleştirme |
+| Teknoloji        | Sürüm | Açıklama                                 |
+| ---------------- | ----- | ---------------------------------------- |
+| Vite             | 6     | Hızlı geliştirme sunucusu ve build aracı |
+| React            | 19    | UI kütüphanesi                           |
+| TypeScript       | 5.7   | Tip güvenliği                            |
+| react-router-dom | 7     | İstemci taraflı yönlendirme (SPA)        |
+| Tailwind CSS     | 4     | Utility-first CSS framework              |
+| Lucide React     | 0.468 | SVG ikon kütüphanesi                     |
+| clsx             | 2.1   | Koşullu CSS sınıf birleştirme            |
+
+E-Tablolar'a aktar
 
 ## Notlar
 
 - Proje %100 statik SPA'dır — sunucu tarafı kod çalışmaz, `dist/` dizinine saf HTML/CSS/JS üretir.
+
 - Tüm arayüz metinleri Türkçedir.
+
 - Tasarım sistemi `src/index.css` içindeki `@theme` direktifinde tanımlıdır.
+
 - Dark mode, `html[data-theme="dark"]` ile CSS değişken override'ları kullanır, tercih `localStorage`'da saklanır.
+
 - Path alias: `@/*` → `./src/*` (hem `tsconfig.json` hem `vite.config.ts`'de tanımlı).

@@ -7,6 +7,7 @@ import ContactPage from "@/pages/ContactPage";
 import ResumePage from "@/pages/ResumePage";
 import PomodoroPage from "@/pages/PomodoroPage";
 import TaskTrackerPage from "@/pages/TaskTrackerPage";
+import KodHaritasiPage from "@/features/kod-haritasi/KodHaritasiPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/ozgecmis" element={<ResumePage />} />
         <Route path="/araclar/pomodoro" element={<PomodoroPage />} />
         <Route path="/araclar/gorev-takipcisi" element={<TaskTrackerPage />} />
+        <Route path="/araclar/kod-haritasi" element={<KodHaritasiPage />} />
       </Routes>
     </MainLayout>
   );

@@ -6,6 +6,7 @@ import {
   User,
   Timer,
   ListChecks,
+  Network,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +37,7 @@ export const navigation: NavGroup[] = [
     items: [
       { label: "Pomodoro Zamanlayıcı", href: "/araclar/pomodoro", icon: Timer },
       { label: "Görev Takipçisi", href: "/araclar/gorev-takipcisi", icon: ListChecks },
+      { label: "Kod Haritası", href: "/araclar/kod-haritasi", icon: Network },
     ],
   },
 ];

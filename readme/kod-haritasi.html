@@ -1,59 +1,50 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kod Haritasi — ayla-portfolio-v2026</title>
+  <title>Kod Haritası — ayla-portfolio-v2026</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="kod-haritasi.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
-<body>
-  <h1>ayla-portfolio-v2026 — Kod Haritasi</h1>
-  <p class="subtitle">Vite 6 &middot; React 19 &middot; TypeScript &middot; Tailwind CSS v4 &middot; 20 dosya &middot; 2.875 satir &middot; <em>Dosyaya tikla &rarr; detay</em></p>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 p-8 transition-colors duration-300 font-sans">
+  
+  <h1 class="text-2xl font-semibold text-sky-500 mb-1">ayla-portfolio-v2026 — Kod Haritası</h1>
+  <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Vite 6 &middot; React 19 &middot; TypeScript &middot; Custom Hooks &middot; SPA Mimarisi</p>
 
-  <div class="toolbar">
-    <div class="select-group">
-      <label for="themeSelect" class="select-label">Tema:</label>
-      <select class="view-select" id="themeSelect" onchange="toggleTheme(this.value)">
-        <option value="light">Acik (Light)</option>
-        <option value="dark">Koyu (Dark)</option>
+  <div class="flex flex-wrap items-center gap-6 mb-6">
+    <div class="flex items-center gap-2">
+      <label for="themeSelect" class="text-sm font-medium text-slate-500 dark:text-slate-400"><i class="bi bi-palette"></i> Tema:</label>
+      <select id="themeSelect" onchange="toggleTheme(this.value)" class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-md px-3 py-1.5 outline-none focus:border-sky-500">
+        <option value="light">Açık</option>
+        <option value="dark">Koyu</option>
       </select>
     </div>
 
-    <div class="select-group">
-      <label for="viewSelect" class="select-label">Gorunum:</label>
-      <select class="view-select" id="viewSelect" title="Gorunum secin" onchange="switchView(this.value)">
-        <option value="indented">Indented Tree</option>
-        <option value="tidy">Tidy Tree</option>
-        <option value="force">Force-directed Graph</option>
-        <option value="tangled">Tangled Tree</option>
+    <div class="flex items-center gap-2">
+      <label for="viewSelect" class="text-sm font-medium text-slate-500 dark:text-slate-400"><i class="bi bi-display"></i> Görünüm:</label>
+      <select id="viewSelect" onchange="switchView(this.value)" class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm rounded-md px-3 py-1.5 outline-none focus:border-sky-500">
+        <option value="inline" selected>Satır İçi Liste</option>
+        <option value="indented">D3 - Indented Tree</option>
+        <option value="tidy">D3 - Tidy Tree</option>
+        <option value="force">D3 - Force Graph</option>
+        <option value="tangled">D3 - Tangled Tree</option>
       </select>
-    </div>
-
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot legend-dot-folder"></div> Klasor</div>
-      <div class="legend-item"><div class="legend-dot legend-dot-page"></div> Sayfa</div>
-      <div class="legend-item"><div class="legend-dot legend-dot-component"></div> Bilesen</div>
-      <div class="legend-item"><div class="legend-dot legend-dot-config"></div> Konfigurasyon</div>
-      <div class="legend-item"><div class="legend-dot legend-dot-style"></div> Stil</div>
     </div>
   </div>
 
   <div id="chart"></div>
-  <div class="tooltip" id="tooltip"></div>
-  <div id="overlay" onclick="closePanel()"></div>
-  <div id="detail-panel">
-    <button type="button" class="close-btn" onclick="closePanel()">&times;</button>
-    <div id="detail-content"></div>
-  </div>
 
-  <!-- Moduler JS dosyalari (sirasiz yuklenemez) -->
   <script src="kod-haritasi-data.js"></script>
   <script src="kod-haritasi-utils.js"></script>
   <script src="kod-haritasi-renderers.js"></script>
   <script>
-    // Baslangic gorunumu
-    renderIndentedTree();
+    renderHtmlTree();
   </script>
 </body>
 </html>

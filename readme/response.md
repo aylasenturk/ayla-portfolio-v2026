@@ -1,17 +1,19 @@
+Markdown
+
+```
 # Yanıt: .NET'ten React'a Göç — Tamamlandı
 
-Verilen geri bildirim doğrultusunda proje, ASP.NET Core MVC'den tamamen ayrıştırılarak modern bir frontend mimarisine taşındı. Aşağıda istenen her adımın nasıl karşılandığı özetlenmiştir.
+Verilen geri bildirim doğrultusunda proje, ASP.NET Core MVC'den tamamen ayrıştırılarak %100 statik ve modern bir frontend mimarisine (Vite + React) taşındı. Aşağıda istenen her adımın ve uygulanan katı kuralların nasıl karşılandığı özetlenmiştir.
 
 ---
 
-## 1. Kurulum
+## 1. Kurulum ve Mimari Seçimi
 
 > *İstenen: Vite ile yeni React projesi*
 
-İstenildiği gibi **Vite** kullanılarak React projesi oluşturuldu.
+Orijinal görev dosyasına sadık kalınarak proje **Vite** kullanılarak oluşturuldu ve Next.js veya benzeri farklı bir mimariye sapılmadı. Geliştirme deneyimini ve kod kalitesini artırmak için TypeScript tercih edildi.
 
-```bash
-npm create vite@latest ayla-portfolio --template react-ts
+```bashnpm create vite@latest ayla-portfolio --template react-ts
 ```
 
 **Teknoloji yığını:** Vite 6, React 19, TypeScript 5.7, Tailwind CSS v4, react-router-dom 7, Lucide React
@@ -22,108 +24,62 @@ npm create vite@latest ayla-portfolio --template react-ts
 
 > *İstenen: wwwroot → public veya src/assets*
 
-- Görseller `public/img/` altına taşındı (avatarlar, proje görselleri vb.).
-- Bootstrap ve jQuery **tamamen kaldırıldı**; yerine Tailwind CSS v4 kullanıldı.
-- Sneat template'inin hazır CSS'leri yerine `src/index.css` içinde `@theme` direktifi ile özel bir tasarım sistemi oluşturuldu.
+- Görseller ve ikonlar `public/img/` altına taşındı.
 
-**İlgili dosya:** `src/index.css` — 13 renk değişkeni, 15+ bileşen sınıfı (.card, .btn-\*, .badge-\*, .input, .select)
+- Eski mimarinin Bootstrap ve jQuery bağımlılıkları **tamamen kaldırıldı**. Yerine modern Utility-first yaklaşımı olan Tailwind CSS v4 entegre edildi.
 
 ---
 
 ## 3. Layout Dönüşümü
 
-> *İstenen: ContentNavbarLayout.cshtml → MainLayout.jsx, Navbar.jsx, Sidebar.jsx*
+> *İstenen: ContentNavbarLayout -> MainLayout ve react-router-dom entegrasyonu*
 
-| Eski (.NET)                          | Yeni (React/Vite)                            | Satır |
-|--------------------------------------|----------------------------------------------|-------|
-| `ContentNavbarLayout.cshtml`         | `src/components/layout/MainLayout.tsx`        | 45    |
-| Navbar kısmı (partial view)          | `src/components/layout/Navbar.tsx`            | 65    |
-| Sidebar kısmı (partial view)         | `src/components/layout/Sidebar.tsx`           | 96    |
-| Footer kısmı                         | `src/components/layout/Footer.tsx`            | 47    |
-| `_Layout.cshtml` (kök)              | `src/App.tsx` + `index.html`                  | 30+18 |
+- Eski MVC layout yapısı terk edildi. Sayfa geçişleri için `react-router-dom` kurularak `App.tsx` içerisinde sayfa yönlendirmeleri yapılandırıldı.
 
-- Sayfa geçişleri için **react-router-dom v7** kullanıldı (istendiği gibi).
-- Navigasyon yapısı `src/lib/navigation.ts` dosyasında merkezi olarak tanımlı; 3 grup, 10 link.
-- Sidebar mobilde overlay ile açılıp kapanıyor, masaüstünde sabit.
-- Navbar'da dark mode toggle butonu (Sun/Moon) ve sosyal medya linkleri mevcut.
+- Navbar ve Sidebar gibi bileşenler `MainLayout.tsx` içerisine modüler olarak bölündü.
 
 ---
 
-## 4. Sayfaları Bileşenlere Bölme
+## 4. Kapsam Daraltma ve Sayfa Bileşenleri (En Önemli Kriter)
 
-> *İstenen: Her .cshtml → bir React Component*
+> *İstenen: SADECE KİŞİSEL PORTFOLYO sayfalarına odaklanılacak.*
 
-| Eski (.NET View)                        | Yeni (React Sayfası)                                   |
-|-----------------------------------------|---------------------------------------------------------|
-| `Views/Portfolio/Index.cshtml`          | `src/pages/HomePage.tsx`                                |
-| `Views/Portfolio/Projects.cshtml`       | `src/pages/ProjectsPage.tsx`                            |
-| `Views/Portfolio/Articles.cshtml`       | `src/pages/ArticlesPage.tsx`                            |
-| `Views/Portfolio/Contact.cshtml`        | `src/pages/ContactPage.tsx`                             |
-| `Views/Portfolio/Resume.cshtml`         | `src/pages/ResumePage.tsx`                              |
-| `Views/Tools/Pomodoro.cshtml`           | `src/pages/PomodoroPage.tsx`                            |
-| `Views/Tools/TaskTracker.cshtml`        | `src/pages/TaskTrackerPage.tsx`                         |
-| `Views/Tools/DatePicker.cshtml`         | `src/pages/DatePickerPage.tsx`                          |
-| `Views/Tools/TempConverter.cshtml`      | `src/pages/TemperatureConverterPage.tsx`                |
-| `Views/Tools/AgeCalculator.cshtml`      | `src/pages/AgeCalculatorPage.tsx`                       |
+Görev dosyasındaki "Yönetim paneli kılığından kurtulma" ve "Sadece portfolyoya odaklanma" kuralı harfiyen uygulandı.
 
-Ek olarak yeniden kullanılabilir `PageHeader` bileşeni oluşturuldu (`src/components/ui/PageHeader.tsx`) — 6 sayfada breadcrumb başlık olarak kullanılıyor.
+- **Silinenler:** Portfolyo amacından sapan "Tarih Seçici", "Yaş Hesaplayıcı" ve "Sıcaklık Dönüştürücü" gibi araç sayfaları projeden tamamen silinerek odak netleştirildi.
+
+- **Kalanlar:** Sadece `Home`, `Projects`, `Articles`, `Contact`, `Resume` sayfaları ile yetenek gösterimi (Showcase) amacıyla `Pomodoro` ve `TaskTracker` araçları tutuldu.
 
 ---
 
-## 5. JavaScript Mantığını React Hook'larına Çevirme
+## 5. JavaScript Mantığını React Hook'larına Çevirme (Clean Code)
 
-> *İstenen: Vanilla JS / jQuery → useState, useEffect*
+> *İstenen: Vanilla JS kodlarını React useState ve useEffect yapılarına çevirme*
 
-**Dönüştürülen hook kullanımları (dosya bazında):**
+Projede sadece Hook dönüşümü yapılmakla kalınmadı, aynı zamanda "Separation of Concerns" (İlgi Alanlarının Ayrılması) prensibine uyularak **Custom Hooks** mimarisi uygulandı:
 
-| Dosya                          | useState | useEffect | useRef | useCallback | useMemo |
-|--------------------------------|----------|-----------|--------|-------------|---------|
-| Pomodoro                       | 6        | 2         | 2      | 2           | —       |
-| Görev Takipçisi                | 4        | 2         | —      | —           | —       |
-| Tarih Seçici                   | 2        | —         | —      | —           | 1       |
-| Sıcaklık Dönüştürücü          | 5        | —         | —      | —           | —       |
-| Yaş Hesaplayıcı               | 5        | —         | —      | —           | —       |
-| İletişim Formu                 | 2        | —         | —      | —           | —       |
-| MainLayout (tema + sidebar)    | 2        | 1         | —      | —           | —       |
+- **`usePomodoro.ts`:** Pomodoro sayfasındaki zamanlayıcı, state yönetimi ve ses çalma mantığı (Business Logic) UI bileşeninden koparılarak ayrı bir Hook'a taşındı.
 
-**Örnekler:**
-
-- `document.getElementById('timer').innerText = ...` yerine `const [timeLeft, setTimeLeft] = useState(25 * 60)` ve JSX'te `<span>{formatTime(timeLeft)}</span>`
-- jQuery `$.ajax()` yerine `localStorage` API (proje backend gerektirmiyor)
-- Bootstrap modal yerine React state ile koşullu render
-- `setInterval` yerine `useRef` + `useEffect` cleanup pattern
+- **`useTaskTracker.ts`:** Görev takipçisi sayfasındaki ekleme, silme ve filtreleme işlemleri ayrı bir Hook içerisine alınarak `TaskTrackerPage.tsx` bileşeni tamamen sadeleştirildi.
 
 ---
 
-## 6. Temizlik
+## 6. Erişilebilirlik (A11y / ARIA) ve Kod Standartları Düzeltmeleri
+
+Linter ve Axe erişilebilirlik araçlarından gelen uyarılar doğrultusunda şu best-practice uygulamaları yapıldı:
+
+- **ARIA Standartları:** `TaskTracker` sayfasındaki `aria-pressed` gibi özelliklere doğrudan boolean yerine string ifadeler (`? "true" : "false"`) geçilerek ekran okuyucular (Screen Readers) için tam uyumluluk sağlandı.
+
+- **Satır İçi CSS Temizliği:** `ResumePage.tsx` sayfasındaki yetenek barlarında bulunan satır içi (inline) CSS'ler temizlendi. Yerine Tailwind'in Arbitrary Values (`w-[${skill.level}%]`) yapısı kullanıldı.
+
+---
+
+## 7. Temizlik
 
 > *İstenen: .csproj, Controllers, .cs dosyalarını sil*
 
-Projede hiçbir .NET kalıntısı bulunmuyor:
+Projede hiçbir .NET kalıntısı bırakılmadı:
 
-- `.csproj` dosyası yok
-- `Controllers/` klasörü yok
-- `.cs` uzantılı dosya yok
-- `wwwroot/` klasörü yok
-- `Views/` klasörü yok
-- jQuery ve Bootstrap bağımlılığı yok
+- `.csproj`, `Controllers/`, `.cs`, `wwwroot/`, `Views/` tamamen silindi.
 
-**Sonuç:** Proje %100 statik frontend uygulaması. `npm run build` komutu `dist/` dizinine saf HTML/CSS/JS çıktısı üretiyor. Herhangi bir statik hosting servisine (Vercel, Netlify, GitHub Pages) doğrudan deploy edilebilir.
-
----
-
-## Ek Geliştirmeler (Görev Kapsamı Dışında)
-
-Görevde istenenin ötesinde şu iyileştirmeler de yapıldı:
-
-| Özellik                  | Açıklama                                                        |
-|--------------------------|-----------------------------------------------------------------|
-| **TypeScript**           | Tüm bileşenler tip güvenli (interface, type tanımları)          |
-| **Tailwind CSS v4**      | Bootstrap yerine utility-first CSS; özel tasarım sistemi        |
-| **Dark Mode**            | Manuel toggle, localStorage ile kalıcı, koyu lacivert tema      |
-| **Responsive Tasarım**   | Mobil uyumlu sidebar overlay, tüm sayfalarda responsive grid    |
-| **Erişilebilirlik**      | aria-label, aria-current, semantik HTML                         |
-
----
-
-**Repo:** [github.com/aylasenturk/ayla-portfolio-v2026](https://github.com/aylasenturk/ayla-portfolio-v2026)
+**Sonuç:** Proje %100 statik SPA (Single Page Application) uygulamasıdır. `npm run build` komutu `dist/` dizinine saf HTML/CSS/JS çıktısı üretir ve Vercel, Netlify, GitHub Pages gibi platformlara anında deploy edilebilir.
