@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type Dispatch, type SetStateAction } from "react";
 
 export type TimerMode = "work" | "shortBreak" | "longBreak";
 
@@ -22,7 +22,7 @@ export interface PomodoroActions {
   handlePause: () => void;
   handleReset: () => void;
   handleApplySettings: () => void;
-  setSettings: React.Dispatch<React.SetStateAction<TimerSettings>>;
+  setSettings: Dispatch<SetStateAction<TimerSettings>>;
 }
 
 export const MODE_LABELS: Record<TimerMode, string> = {

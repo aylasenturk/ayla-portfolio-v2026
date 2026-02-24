@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
 
 export interface Task {
   id: string;
@@ -23,8 +23,8 @@ export interface TaskTrackerState {
 }
 
 export interface TaskTrackerActions {
-  setInput: React.Dispatch<React.SetStateAction<string>>;
-  setFilter: React.Dispatch<React.SetStateAction<FilterType>>;
+  setInput: Dispatch<SetStateAction<string>>;
+  setFilter: Dispatch<SetStateAction<FilterType>>;
   addTask: () => void;
   toggleTask: (id: string) => void;
   removeTask: (id: string) => void;
@@ -45,19 +45,14 @@ function saveTasks(tasks: Task[]): void {
 }
 
 export function useTaskTracker(): TaskTrackerState & TaskTrackerActions {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // localStorage'dan doğrudan lazy initializer ile oku — useEffect'e gerek yok
+  const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [input, setInput] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setTasks(loadTasks());
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded) saveTasks(tasks);
-  }, [tasks, isLoaded]);
+    saveTasks(tasks);
+  }, [tasks]);
 
   function addTask(): void {
     const trimmed = input.trim();
