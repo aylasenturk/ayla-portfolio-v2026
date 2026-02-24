@@ -1,7 +1,7 @@
 import { Plus, Trash2, ClipboardList } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import { clsx } from "clsx";
-import { useTaskTracker, type FilterType } from "@/hooks/useTaskTracker";
+import { useTaskTracker, type FilterType } from "./useTaskTracker";
 
 const FILTERS: { key: FilterType; label: string }[] = [
   { key: "all", label: "Tümü" },

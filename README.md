@@ -5,7 +5,7 @@ Ayla Şentürk'ün kişisel portfolyo web sitesi. **Vite + React + TypeScript + 
 ## Teknolojiler
 
 | Katman | Teknoloji |
-|---|---|
+| --- | --- |
 | Framework | React 19 + TypeScript |
 | Build Aracı | Vite 6 |
 | Stil | Tailwind CSS v4 |
@@ -31,32 +31,39 @@ npm run preview
 
 ## Proje Yapısı
 
-```
+```text
 src/
-  hooks/
-    usePomodoro.ts          # Pomodoro zamanlayıcı business logic
-    useTaskTracker.ts       # Görev takipçisi business logic
   components/
     layout/                 # Sidebar, Navbar, Footer, MainLayout
     ui/                     # Yeniden kullanılabilir UI bileşenleri
+  features/
+    code-map/               # Kod Haritası modülü (sayfa + iç bileşenler + data)
+    pomodoro/               # Pomodoro sayfası + usePomodoro hook
+    task-tracker/           # Görev Takipçisi sayfası + useTaskTracker hook
   pages/
     HomePage.tsx
     ProjectsPage.tsx
     ArticlesPage.tsx
     ContactPage.tsx
     ResumePage.tsx
-    PomodoroPage.tsx        # Dumb component — logic hook'ta
-    TaskTrackerPage.tsx     # Dumb component — logic hook'ta
   lib/
     navigation.ts           # Navigasyon yapısı
 ```
 
+## Route Haritası
+
+- Portfolio (TR): `/projeler`, `/makaleler`, `/iletisim`, `/ozgecmis`
+- Tools (EN): `/tools/pomodoro`, `/tools/task-tracker`, `/tools/code-map`
+- Legacy yönlendirme: `/araclar/*` için bilgilendirme sayfası gösterilir ve ardından yeni `/tools/*` rotasına yönlendirilir.
+
 ## Sayfalar
 
 **Portfolio:**
+
 - Ana Sayfa, Projeler, Makaleler, İletişim, Özgeçmiş
 
 **Üretkenlik Araçları (Showcase):**
+
 - Pomodoro Zamanlayıcı, Görev Takipçisi
 
 ## Özellikler

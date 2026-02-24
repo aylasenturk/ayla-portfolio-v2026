@@ -5,7 +5,7 @@ import {
   formatTime,
   MODE_COLORS,
   MODE_LABELS,
-} from "@/hooks/usePomodoro";
+} from "./usePomodoro";
 
 export default function PomodoroPage() {
   const {

@@ -32,6 +32,7 @@ No test framework is configured.
 This is a **static portfolio site** for Ayla Senturk, built with Vite + React + react-router-dom. The `dist/` directory contains the deployable static files.
 
 ### Tech Stack
+
 - Vite 6 (build tool)
 - React 19, TypeScript (strict mode)
 - react-router-dom 7 (client-side routing)
@@ -63,11 +64,13 @@ Routes are defined in `src/App.tsx`.
 **Important**: The theme lives in `src/index.css` using Tailwind v4's `@theme` directive.
 
 Key CSS tokens defined in `@theme`:
+
 - Colors: `primary-50` through `primary-900` (blue scale), `surface`, `surface-alt`, `surface-hover`, `text-primary`, `text-secondary`, `text-muted`, `border`, `border-light`
 - Fonts: `--font-sans` (Inter), `--font-mono` (JetBrains Mono)
 - Dark mode: `html[data-theme="dark"]` overrides in `@layer base`
 
 Reusable component classes defined in `@layer components` in index.css:
+
 - Layout: `.card`, `.card-header`, `.card-body`, `.card-footer`
 - Buttons: `.btn`, `.btn-primary`, `.btn-outline`, `.btn-success`, `.btn-warning`, `.btn-danger`, `.btn-ghost`, `.btn-icon`
 - Forms: `.input`, `.select`, `.label`
@@ -82,7 +85,7 @@ Use `PageHeader` component (`src/components/ui/PageHeader.tsx`) for page titles 
 
 ### Language
 
-All UI text is in Turkish. Route paths use Turkish slugs (`/projeler`, `/makaleler`, `/iletisim`, `/ozgecmis`, `/araclar/gorev-takipcisi`, etc.).
+All UI text is in Turkish. Portfolio routes use Turkish slugs (`/projeler`, `/makaleler`, `/iletisim`, `/ozgecmis`), tool routes use English slugs (`/tools/pomodoro`, `/tools/task-tracker`, `/tools/code-map`).
 
 ## Bağlam Penceresi Yönetimi
 

@@ -1,5 +1,3 @@
-Markdown
-
 # Projeyi Çalıştırma Kılavuzu
 
 ## Gereksinimler
@@ -14,16 +12,14 @@ Projeyi klonlayın ve bağımlılıkları yükleyin:
 ```bash
 git clone [https://github.com/aylasenturk/ayla-portfolio-v2026.git](https://github.com/aylasenturk/ayla-portfolio-v2026.git)
 cd ayla-portfolio-v2026
-npm install## Geliştirme Sunucusu
+npm install
 ```
-
-
 
 ```bash
 npm run dev
 ```
 
-Tarayıcıda açın: **http://localhost:port_number**
+Tarayıcıda açın: **[http://localhost:5173](http://localhost:5173)**
 
 Dosya değişiklikleri otomatik olarak yansır (Vite HMR — Hot Module Replacement).
 
@@ -37,8 +33,6 @@ Bu komut önce TypeScript tip kontrolü (`tsc --noEmit`) yapar, ardından `dist/
 
 ## Önizleme (Build Sonrası)
 
-
-
 ```bash
 npm run preview
 ```
@@ -47,9 +41,7 @@ npm run preview
 
 ## Proje Yapısı (Özet)
 
-Plaintext
-
-```
+```text
 src/
 ├── main.tsx               # Uygulama giriş noktası (ReactDOM, BrowserRouter)
 ├── App.tsx                # Rota tanımları (react-router-dom Routes)
@@ -61,14 +53,13 @@ src/
 │   ├── ArticlesPage.tsx   #   Makaleler
 │   ├── ContactPage.tsx    #   İletişim Formu
 │   ├── ResumePage.tsx     #   Özgeçmiş (CV)
-│   ├── PomodoroPage.tsx   #   Pomodoro Zamanlayıcı
-│   └── TaskTrackerPage.tsx#   Görev Takipçisi
+├── features/              # Feature tabanlı modüller
+│   ├── code-map/          #   Kod Haritası (page + components + data)
+│   ├── pomodoro/          #   PomodoroPage + usePomodoro
+│   └── task-tracker/      #   TaskTrackerPage + useTaskTracker
 ├── components/            # Yeniden Kullanılabilir Bileşenler
 │   ├── layout/            #   MainLayout, Navbar, Sidebar, Footer
 │   └── ui/                #   PageHeader
-├── hooks/                 # Custom React Hook'ları (İş Mantığı)
-│   ├── usePomodoro.ts     #   Pomodoro zamanlayıcı mantığı
-│   └── useTaskTracker.ts  #   Görev takipçisi CRUD işlemleri
 └── lib/                   # Yardımcı Modüller
     └── navigation.ts      #   Navigasyon yapılandırması
 ```
@@ -85,8 +76,6 @@ src/
 | Lucide React     | 0.468 | SVG ikon kütüphanesi                     |
 | clsx             | 2.1   | Koşullu CSS sınıf birleştirme            |
 
-E-Tablolar'a aktar
-
 ## Notlar
 
 - Proje %100 statik SPA'dır — sunucu tarafı kod çalışmaz, `dist/` dizinine saf HTML/CSS/JS üretir.
@@ -98,3 +87,7 @@ E-Tablolar'a aktar
 - Dark mode, `html[data-theme="dark"]` ile CSS değişken override'ları kullanır, tercih `localStorage`'da saklanır.
 
 - Path alias: `@/*` → `./src/*` (hem `tsconfig.json` hem `vite.config.ts`'de tanımlı).
+
+- Route standardı (Portfolio - TR): `/projeler`, `/makaleler`, `/iletisim`, `/ozgecmis`
+
+- Route standardı (Tools - EN): `/tools/pomodoro`, `/tools/task-tracker`, `/tools/code-map`

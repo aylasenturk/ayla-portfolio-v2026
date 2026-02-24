@@ -35,9 +35,9 @@ export const navigation: NavGroup[] = [
   {
     title: "Üretkenlik Araçları",
     items: [
-      { label: "Pomodoro Zamanlayıcı", href: "/araclar/pomodoro", icon: Timer },
-      { label: "Görev Takipçisi", href: "/araclar/gorev-takipcisi", icon: ListChecks },
-      { label: "Kod Haritası", href: "/araclar/kod-haritasi", icon: Network },
+      { label: "Pomodoro Zamanlayıcı", href: "/tools/pomodoro", icon: Timer },
+      { label: "Görev Takipçisi", href: "/tools/task-tracker", icon: ListChecks },
+      { label: "Kod Haritası", href: "/tools/code-map", icon: Network },
     ],
   },
 ];

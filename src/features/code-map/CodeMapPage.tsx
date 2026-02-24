@@ -10,7 +10,7 @@ const TABS: { key: ViewMode; label: string }[] = [
   { key: "tree", label: "Girintili Ağaç" },
 ];
 
-export default function KodHaritasiPage() {
+export default function CodeMapPage() {
   const [view, setView] = useState<ViewMode>("graph");
 
   return (
