@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import type { FileNode } from "../types";
 import { NODE_COLORS, NODE_LABELS, SECTION_ICONS } from "./constants";
+import Icon from "./Icon";
 
 // -- Badge --
 function Badge({ text, color }: { text: string; color: string }) {
@@ -23,11 +23,11 @@ function Section({
   title: string;
   children: ReactNode;
 }) {
-  const icon = SECTION_ICONS[title] || "bi-chevron-right";
+  const icon = SECTION_ICONS[title] || "chevron-right";
   return (
     <div>
-      <h4 className="text-xs font-semibold text-text-muted mb-1.5">
-        <i className={`bi ${icon} mr-1`} />
+      <h4 className="text-xs font-semibold text-text-muted mb-1.5 flex items-center gap-1">
+        <Icon name={icon} className="w-3.5 h-3.5" />
         {title}
       </h4>
       <div className="space-y-1">{children}</div>
@@ -65,7 +65,7 @@ export default function DetailPanel({
           className="btn-ghost btn-icon shrink-0"
           aria-label="Kapat"
         >
-          <i className="bi bi-x-lg" />
+          <Icon name="x-lg" className="w-4 h-4" />
         </button>
       </div>
 

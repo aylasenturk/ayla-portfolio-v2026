@@ -38,15 +38,15 @@ export const EDGE_LABELS: [EdgeType, string][] = [
 ];
 
 export const SECTION_ICONS: Record<string, string> = {
-  Exports: "bi-box-arrow-up",
-  Props: "bi-box-seam",
-  State: "bi-database",
-  Hooks: "bi-lightning-charge-fill",
-  Fonksiyonlar: "bi-braces",
-  Tipler: "bi-diagram-3",
-  Sabitler: "bi-bookmark-fill",
-  Hesaplanan: "bi-calculator",
-  Refs: "bi-link-45deg",
+  Exports: "box-arrow-up",
+  Props: "box-seam",
+  State: "database",
+  Hooks: "lightning-charge-fill",
+  Fonksiyonlar: "braces",
+  Tipler: "diagram-3",
+  Sabitler: "bookmark-fill",
+  Hesaplanan: "calculator",
+  Refs: "link-45deg",
 };
 
 // -- Simulasyon ayarlari --
