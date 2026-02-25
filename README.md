@@ -37,15 +37,19 @@ src/
     layout/                 # Sidebar, Navbar, Footer, MainLayout
     ui/                     # Yeniden kullanılabilir UI bileşenleri
   features/
-    code-map/               # Kod Haritası modülü (sayfa + iç bileşenler + data)
-    pomodoro/               # Pomodoro sayfası + usePomodoro hook
-    task-tracker/           # Görev Takipçisi sayfası + useTaskTracker hook
+    code-map/               # Kod Haritası modülü (lib + bileşenler + data)
+    pomodoro/               # usePomodoro hook + PomodoroPage
+    task-tracker/           # useTaskTracker hook + TaskTrackerPage
   pages/
     HomePage.tsx
     ProjectsPage.tsx
     ArticlesPage.tsx
     ContactPage.tsx
     ResumePage.tsx
+    tools/                  # Araç sayfaları (feedback-and-new-task.md uyumlu)
+      PomodoroPage.tsx
+      TaskTrackerPage.tsx
+      CodeMapPage.tsx
   lib/
     navigation.ts           # Navigasyon yapısı
 ```

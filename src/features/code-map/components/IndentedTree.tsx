@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import type { FileNode } from "../types";
-import { NODE_COLORS, NODE_LABELS, EDGE_COLORS } from "./constants";
-import { buildTree, type TreeNodeData } from "./buildTree";
+import { NODE_COLORS, NODE_LABELS, EDGE_COLORS } from "../lib/constants";
+import { buildTree, type TreeNodeData } from "../lib/buildTree";
 import DetailPanel from "./DetailPanel";
 import Icon from "./Icon";
 

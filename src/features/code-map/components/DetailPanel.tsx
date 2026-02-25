@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { FileNode } from "../types";
-import { NODE_COLORS, NODE_LABELS, SECTION_ICONS } from "./constants";
+import { NODE_COLORS, NODE_LABELS, SECTION_ICONS } from "../lib/constants";
 import Icon from "./Icon";
 
 // -- Badge --

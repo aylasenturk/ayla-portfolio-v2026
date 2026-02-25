@@ -61,7 +61,7 @@ export default [
       "out/",
       "node_modules/",
       ".next/",
-      "readme/",
+      "docs/",
     ],
   },
 ];

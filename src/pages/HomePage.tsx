@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FolderOpen,
@@ -10,6 +11,15 @@ import {
   Accessibility,
   Smartphone,
 } from "lucide-react";
+import ForceGraph from "@/features/code-map/components/ForceGraph";
+import IndentedTree from "@/features/code-map/components/IndentedTree";
+
+type CodeMapView = "graph" | "tree";
+
+const CODE_MAP_TABS: { key: CodeMapView; label: string }[] = [
+  { key: "graph", label: "Yönlendirilmiş Grafik" },
+  { key: "tree", label: "Girintili Ağaç" },
+];
 
 const quickAccessCards = [
   {
@@ -75,6 +85,8 @@ const features = [
 ];
 
 export default function HomePage() {
+  const [codeMapView, setCodeMapView] = useState<CodeMapView>("graph");
+
   return (
     <div className="space-y-6">
       {/* Hoş Geldiniz Kartı */}
@@ -95,6 +107,34 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Kod Haritası */}
+      <div className="card">
+        <div className="card-header flex items-center justify-between">
+          <h2 className="text-base font-semibold">Kod Haritası</h2>
+          <div className="flex rounded-lg border border-border overflow-hidden">
+            {CODE_MAP_TABS.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setCodeMapView(tab.key)}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                  codeMapView === tab.key
+                    ? "bg-primary-600 text-white"
+                    : "bg-surface text-text-secondary hover:bg-surface-hover"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="card-body">
+          <p className="text-sm text-text-secondary mb-4">
+            Düğümlere tıklayarak dosya detaylarını görüntüleyin.
+          </p>
+          {codeMapView === "graph" ? <ForceGraph /> : <IndentedTree />}
         </div>
       </div>
 

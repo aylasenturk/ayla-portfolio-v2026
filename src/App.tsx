@@ -6,9 +6,9 @@ import ArticlesPage from "@/pages/ArticlesPage";
 import ContactPage from "@/pages/ContactPage";
 import ResumePage from "@/pages/ResumePage";
 import LegacyToolRoutePage from "@/pages/LegacyToolRoutePage";
-import PomodoroPage from "@/features/pomodoro/PomodoroPage";
-import TaskTrackerPage from "@/features/task-tracker/TaskTrackerPage";
-import CodeMapPage from "@/features/code-map/CodeMapPage";
+import PomodoroPage from "@/pages/tools/PomodoroPage";
+import TaskTrackerPage from "@/pages/tools/TaskTrackerPage";
+
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
         <Route path="/ozgecmis" element={<ResumePage />} />
         <Route path="/tools/pomodoro" element={<PomodoroPage />} />
         <Route path="/tools/task-tracker" element={<TaskTrackerPage />} />
-        <Route path="/tools/code-map" element={<CodeMapPage />} />
+
         <Route path="/araclar/*" element={<LegacyToolRoutePage />} />
       </Routes>
     </MainLayout>

@@ -1,3 +1,4 @@
+import { useState, useRef, useCallback } from "react";
 import type React from "react";
 import {
   Linkedin,
@@ -18,10 +19,11 @@ import {
   User,
   Languages,
   IdCard,
-  Building,
-  ShoppingCart,
-  Users,
+  Timer,
+  ListChecks,
   Info,
+  Pencil,
+  Printer,
 } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 
@@ -118,11 +120,47 @@ function SkillSection({
 }
 
 export default function ResumePage() {
+  const [isEditing, setIsEditing] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useCallback(() => {
+    window.print();
+  }, []);
+
+  const toggleEdit = useCallback(() => {
+    setIsEditing((prev) => !prev);
+  }, []);
+
   return (
     <div>
-      <PageHeader section="Portfolio" title="Özgeçmiş" />
+      <div className="flex items-center justify-between mb-6">
+        <PageHeader section="Portfolio" title="Özgeçmiş" />
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={toggleEdit}
+            className={`btn ${isEditing ? "btn-warning" : "btn-outline"} gap-1.5`}
+          >
+            <Pencil className="w-4 h-4" />
+            {isEditing ? "Düzenleniyor" : "Düzenle"}
+          </button>
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="btn btn-primary gap-1.5"
+          >
+            <Printer className="w-4 h-4" />
+            Yazdır
+          </button>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div
+        ref={contentRef}
+        className={`grid grid-cols-1 lg:grid-cols-3 gap-6 ${isEditing ? "ring-2 ring-amber-400/50 rounded-lg p-2" : ""}`}
+        contentEditable={isEditing}
+        suppressContentEditableWarning
+      >
         {/* Sol Kolon */}
         <div className="space-y-4">
           {/* Profil */}
@@ -393,19 +431,11 @@ export default function ResumePage() {
               </h2>
             </div>
             <div className="card-body">
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-surface-alt border border-border-light mb-4">
-                <Info className="w-4 h-4 text-text-muted flex-shrink-0" />
-                <p className="text-xs text-text-secondary">
-                  Aşağıdaki projeler, üniversite eğitimi sürecinde ders odaklı olarak
-                  hazırlanmış uygulamalardır.
-                </p>
-              </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
-                  { icon: Building, title: "Otel Rezervasyon", subtitle: "Web Uygulaması", tags: ["HTML", "CSS", "JS"], color: "text-primary-600" },
-                  { icon: ShoppingCart, title: "E-Ticaret Sitesi", subtitle: "Tam Kapsamlı Platform", tags: ["PHP", "MySQL"], color: "text-emerald-600" },
-                  { icon: Users, title: "Öğrenci Proje Sistemi", subtitle: "Portal Uygulaması", tags: ["PHP", "MySQL"], color: "text-cyan-600" },
+                  { icon: Globe, title: "Kişisel Portfolyo", subtitle: "React + Vite + Tailwind", tags: ["React", "TypeScript", "D3.js"], color: "text-cyan-600" },
+                  { icon: Timer, title: "Pomodoro Zamanlayıcı", subtitle: "Üretkenlik Aracı", tags: ["React", "Custom Hook", "useState"], color: "text-primary-600" },
+                  { icon: ListChecks, title: "Görev Takipçisi", subtitle: "Görev Yönetim Aracı", tags: ["React", "Custom Hook", "CRUD"], color: "text-emerald-600" },
                 ].map((project) => {
                   const Icon = project.icon;
                   return (

@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import * as d3 from "d3";
 import type { FileNode, FileNodeType, EdgeType } from "../types";
 import { codeMapData } from "../data/code-map-data";
@@ -10,7 +11,7 @@ import {
   EDGE_LABELS,
   SIMULATION_CONFIG,
   getNodeRadius,
-} from "./constants";
+} from "../lib/constants";
 
 // -- D3 simulasyonu icin genisletilmis tip --
 interface SimNode extends FileNode {
@@ -27,250 +28,233 @@ interface SimEdge {
   label?: string;
 }
 
+// Render icin pozisyon verisi
+interface NodePos {
+  id: string;
+  x: number;
+  y: number;
+  name: string;
+  type: FileNodeType;
+  node: FileNode;
+}
+
+interface EdgePos {
+  key: string;
+  sx: number;
+  sy: number;
+  tx: number;
+  ty: number;
+  type: EdgeType;
+  sourceId: string;
+  targetId: string;
+}
+
 // -- Ana Bilesen --
 export default function ForceGraph() {
-  const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const simulationRef = useRef<d3.Simulation<SimNode, SimEdge> | null>(null);
+  const simNodesRef = useRef<SimNode[]>([]);
+  const dragRef = useRef<string | null>(null);
+
+  const [nodePositions, setNodePositions] = useState<NodePos[]>([]);
+  const [edgePositions, setEdgePositions] = useState<EdgePos[]>([]);
   const [selectedNode, setSelectedNode] = useState<FileNode | null>(null);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+  const [isDark, setIsDark] = useState(
+    document.documentElement.getAttribute("data-theme") === "dark"
+  );
 
-  const handleNodeClick = useCallback((node: FileNode) => {
-    setSelectedNode((prev) => (prev?.id === node.id ? null : node));
-  }, []);
-
+  // Simulasyon kurulumu — D3 yalnizca fizik hesaplamasi icin
   useEffect(() => {
-    if (!svgRef.current || !containerRef.current) return;
-
     const container = containerRef.current;
-    const svg = d3.select(svgRef.current);
+    if (!container) return;
 
-    function render() {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    setDimensions({ width, height });
 
-      if (simulationRef.current) {
-        simulationRef.current.stop();
+    const nodes: SimNode[] = codeMapData.nodes.map((n) => ({
+      ...n,
+      x: width / 2 + (Math.random() - 0.5) * 100,
+      y: height / 2 + (Math.random() - 0.5) * 100,
+      fx: null,
+      fy: null,
+    }));
+    const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+    const edges: SimEdge[] = codeMapData.edges.reduce<SimEdge[]>((acc, e) => {
+      const source = nodeMap.get(e.source);
+      const target = nodeMap.get(e.target);
+      if (source && target) {
+        acc.push({ source, target, type: e.type, label: e.label });
       }
+      return acc;
+    }, []);
 
-      svg.selectAll("*").remove();
-      svg.attr("viewBox", [0, 0, width, height].join(" "));
+    simNodesRef.current = nodes;
 
-      const isDark =
-        document.documentElement.getAttribute("data-theme") === "dark";
-      const textColor = isDark ? "#e2e8f0" : "#1e293b";
+    const simulation = d3
+      .forceSimulation(nodes)
+      .force(
+        "link",
+        d3
+          .forceLink<SimNode, SimEdge>(edges)
+          .id((d) => d.id)
+          .distance(SIMULATION_CONFIG.linkDistance)
+          .strength(SIMULATION_CONFIG.linkStrength)
+      )
+      .force(
+        "charge",
+        d3.forceManyBody().strength(SIMULATION_CONFIG.chargeStrength)
+      )
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force(
+        "collision",
+        d3
+          .forceCollide()
+          .radius((d) => getNodeRadius((d as SimNode).type) + 5)
+      )
+      .force(
+        "x",
+        d3.forceX(width / 2).strength(SIMULATION_CONFIG.centerStrength)
+      )
+      .force(
+        "y",
+        d3.forceY(height / 2).strength(SIMULATION_CONFIG.centerStrength)
+      );
 
-      // Node map — O(1) lookup ile guvenli edge eslestirme
-      const nodes: SimNode[] = codeMapData.nodes.map((n) => ({
-        ...n,
-        x: 0,
-        y: 0,
-        fx: null,
-        fy: null,
-      }));
-      const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+    simulationRef.current = simulation;
 
-      const edges: SimEdge[] = codeMapData.edges.reduce<SimEdge[]>((acc, e) => {
-        const source = nodeMap.get(e.source);
-        const target = nodeMap.get(e.target);
-        if (source && target) {
-          acc.push({ source, target, type: e.type, label: e.label });
-        }
-        return acc;
-      }, []);
+    // Her tick'te pozisyonlari state'e kopyala
+    simulation.on("tick", () => {
+      setNodePositions(
+        nodes.map((n) => ({
+          id: n.id,
+          x: n.x,
+          y: n.y,
+          name: n.name,
+          type: n.type,
+          node: n,
+        }))
+      );
+      setEdgePositions(
+        edges.map((e, i) => ({
+          key: `${e.source.id}-${e.target.id}-${i}`,
+          sx: e.source.x,
+          sy: e.source.y,
+          tx: e.target.x,
+          ty: e.target.y,
+          type: e.type,
+          sourceId: e.source.id,
+          targetId: e.target.id,
+        }))
+      );
+    });
 
-      // Ok ucu tanimlari
-      const defs = svg.append("defs");
-      (["import", "route", "hook", "data"] as EdgeType[]).forEach((type) => {
-        defs
-          .append("marker")
-          .attr("id", `arrow-${type}`)
-          .attr("viewBox", "0 -5 10 10")
-          .attr("refX", 20)
-          .attr("refY", 0)
-          .attr("markerWidth", 6)
-          .attr("markerHeight", 6)
-          .attr("orient", "auto")
-          .append("path")
-          .attr("d", "M0,-5L10,0L0,5")
-          .attr("fill", EDGE_COLORS[type]);
-      });
-
-      // Simulasyon
-      const simulation = d3
-        .forceSimulation(nodes)
-        .force(
-          "link",
-          d3
-            .forceLink<SimNode, SimEdge>(edges)
-            .id((d) => d.id)
-            .distance(SIMULATION_CONFIG.linkDistance)
-            .strength(SIMULATION_CONFIG.linkStrength)
-        )
-        .force(
-          "charge",
-          d3.forceManyBody().strength(SIMULATION_CONFIG.chargeStrength)
-        )
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force(
-          "collision",
-          d3
-            .forceCollide()
-            .radius((d) => getNodeRadius((d as SimNode).type) + 5)
-        )
+    // Pencere boyutu degisince simulasyonu guncelle
+    const resizeObserver = new ResizeObserver(() => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      setDimensions({ width: w, height: h });
+      simulation
+        .force("center", d3.forceCenter(w / 2, h / 2))
         .force(
           "x",
-          d3.forceX(width / 2).strength(SIMULATION_CONFIG.centerStrength)
+          d3.forceX(w / 2).strength(SIMULATION_CONFIG.centerStrength)
         )
         .force(
           "y",
-          d3.forceY(height / 2).strength(SIMULATION_CONFIG.centerStrength)
-        );
-
-      simulationRef.current = simulation;
-
-      // Baglanti cizgileri
-      const link = svg
-        .append("g")
-        .selectAll("line")
-        .data(edges)
-        .join("line")
-        .attr("stroke", (d) => EDGE_COLORS[d.type])
-        .attr("stroke-width", 1.5)
-        .attr("stroke-opacity", 0.5)
-        .attr("marker-end", (d) => `url(#arrow-${d.type})`);
-
-      // Dugum gruplari
-      const node = svg
-        .append("g")
-        .selectAll<SVGGElement, SimNode>("g")
-        .data(nodes)
-        .join("g")
-        .attr("cursor", "pointer")
-        .attr("tabindex", 0)
-        .attr("role", "button")
-        .attr("aria-label", (d) => `${d.name} — ${NODE_LABELS[d.type]}`)
-        .style("outline", "none")
-        .call(
-          d3
-            .drag<SVGGElement, SimNode>()
-            .on("start", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0.3).restart();
-              d.fx = d.x;
-              d.fy = d.y;
-            })
-            .on("drag", (event, d) => {
-              d.fx = event.x;
-              d.fy = event.y;
-            })
-            .on("end", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0);
-              d.fx = null;
-              d.fy = null;
-            })
-        );
-
-      // Dugum daireleri
-      node
-        .append("circle")
-        .attr("r", (d) => getNodeRadius(d.type))
-        .attr("fill", (d) => NODE_COLORS[d.type])
-        .attr("opacity", 0.9);
-
-      // Dugum etiketleri
-      node
-        .append("text")
-        .attr("dy", (d) =>
-          d.type === "root" || d.type === "hook" ? -18 : -14
+          d3.forceY(h / 2).strength(SIMULATION_CONFIG.centerStrength)
         )
-        .attr("text-anchor", "middle")
-        .attr("fill", textColor)
-        .attr("font-size", (d) => (d.type === "root" ? "13px" : "11px"))
-        .attr("font-weight", (d) =>
-          d.type === "root" || d.type === "layout" ? "600" : "400"
-        )
-        .attr("pointer-events", "none")
-        .text((d) => d.name);
-
-      // Tiklama + klavye erisilebilirligi
-      node.on("click", (_event, d) => {
-        handleNodeClick(d);
-      });
-      node.on("keydown", (event: KeyboardEvent, d) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          handleNodeClick(d);
-        }
-      });
-
-      // Hover efekti
-      node
-        .on("mouseenter", function (_, d) {
-          d3.select(this)
-            .select("circle")
-            .transition()
-            .duration(150)
-            .attr("r", getNodeRadius(d.type, true));
-          link
-            .attr("stroke-opacity", (l) =>
-              l.source.id === d.id || l.target.id === d.id ? 1 : 0.15
-            )
-            .attr("stroke-width", (l) =>
-              l.source.id === d.id || l.target.id === d.id ? 2.5 : 1
-            );
-        })
-        .on("mouseleave", function (_, d) {
-          d3.select(this)
-            .select("circle")
-            .transition()
-            .duration(150)
-            .attr("r", getNodeRadius(d.type));
-          link.attr("stroke-opacity", 0.5).attr("stroke-width", 1.5);
-        });
-
-      // Tick
-      simulation.on("tick", () => {
-        link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
-
-        node.attr("transform", (d) => `translate(${d.x},${d.y})`);
-      });
-    }
-
-    // Ilk render
-    render();
-
-    // Pencere boyutu degisince yeniden ciz
-    const resizeObserver = new ResizeObserver(() => {
-      render();
+        .alpha(0.3)
+        .restart();
     });
     resizeObserver.observe(container);
 
-    // Dark mode degisince yeniden ciz
-    const themeObserver = new MutationObserver((mutations) => {
+    return () => {
+      simulation.stop();
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  // Dark mode degisimini dinle
+  useEffect(() => {
+    const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
-        if (
-          m.type === "attributes" &&
-          m.attributeName === "data-theme"
-        ) {
-          render();
+        if (m.type === "attributes" && m.attributeName === "data-theme") {
+          setIsDark(
+            document.documentElement.getAttribute("data-theme") === "dark"
+          );
           break;
         }
       }
     });
-    themeObserver.observe(document.documentElement, {
+    observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
+    return () => observer.disconnect();
+  }, []);
+
+  // Drag — document seviyesinde mouse olaylari
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!dragRef.current || !svgRef.current) return;
+      const rect = svgRef.current.getBoundingClientRect();
+      const scaleX = dimensions.width / rect.width;
+      const scaleY = dimensions.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+
+      const node = simNodesRef.current.find((n) => n.id === dragRef.current);
+      if (node) {
+        node.fx = x;
+        node.fy = y;
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (!dragRef.current) return;
+      const node = simNodesRef.current.find((n) => n.id === dragRef.current);
+      if (node) {
+        node.fx = null;
+        node.fy = null;
+      }
+      dragRef.current = null;
+      simulationRef.current?.alphaTarget(0);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      simulationRef.current?.stop();
-      resizeObserver.disconnect();
-      themeObserver.disconnect();
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [handleNodeClick]);
+  }, [dimensions]);
+
+  // Dugum suruklemesini baslat
+  const handleDragStart = useCallback(
+    (e: ReactMouseEvent, nodeId: string) => {
+      e.preventDefault();
+      const node = simNodesRef.current.find((n) => n.id === nodeId);
+      if (!node) return;
+      dragRef.current = nodeId;
+      node.fx = node.x;
+      node.fy = node.y;
+      simulationRef.current?.alphaTarget(0.3).restart();
+    },
+    []
+  );
+
+  // Dugum tiklama
+  const handleNodeClick = useCallback((node: FileNode) => {
+    setSelectedNode((prev) => (prev?.id === node.id ? null : node));
+  }, []);
+
+  const textColor = isDark ? "#e2e8f0" : "#1e293b";
 
   return (
     <div
@@ -281,9 +265,110 @@ export default function ForceGraph() {
       <svg
         ref={svgRef}
         className="w-full h-full"
+        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
         role="img"
         aria-label="Kod haritasi graf gorsellestirmesi"
-      />
+      >
+        {/* Ok ucu tanimlari */}
+        <defs>
+          {(["import", "route", "hook", "data"] as EdgeType[]).map((type) => (
+            <marker
+              key={type}
+              id={`arrow-${type}`}
+              viewBox="0 -5 10 10"
+              refX={20}
+              refY={0}
+              markerWidth={6}
+              markerHeight={6}
+              orient="auto"
+            >
+              <path d="M0,-5L10,0L0,5" fill={EDGE_COLORS[type]} />
+            </marker>
+          ))}
+        </defs>
+
+        {/* Baglanti cizgileri */}
+        <g>
+          {edgePositions.map((edge) => (
+            <line
+              key={edge.key}
+              x1={edge.sx}
+              y1={edge.sy}
+              x2={edge.tx}
+              y2={edge.ty}
+              stroke={EDGE_COLORS[edge.type]}
+              strokeWidth={
+                hoveredNodeId &&
+                (edge.sourceId === hoveredNodeId ||
+                  edge.targetId === hoveredNodeId)
+                  ? 2.5
+                  : 1.5
+              }
+              strokeOpacity={
+                hoveredNodeId
+                  ? edge.sourceId === hoveredNodeId ||
+                    edge.targetId === hoveredNodeId
+                    ? 1
+                    : 0.15
+                  : 0.5
+              }
+              markerEnd={`url(#arrow-${edge.type})`}
+            />
+          ))}
+        </g>
+
+        {/* Dugum gruplari */}
+        <g>
+          {nodePositions.map((np) => {
+            const isHovered = hoveredNodeId === np.id;
+            const radius = getNodeRadius(np.type, isHovered);
+            return (
+              <g
+                key={np.id}
+                transform={`translate(${np.x},${np.y})`}
+                cursor="pointer"
+                tabIndex={0}
+                role="button"
+                aria-label={`${np.name} — ${NODE_LABELS[np.type]}`}
+                style={{ outline: "none" }}
+                onClick={() => handleNodeClick(np.node)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleNodeClick(np.node);
+                  }
+                }}
+                onMouseEnter={() => setHoveredNodeId(np.id)}
+                onMouseLeave={() => setHoveredNodeId(null)}
+                onMouseDown={(e) => handleDragStart(e, np.id)}
+              >
+                <circle
+                  r={radius}
+                  fill={NODE_COLORS[np.type]}
+                  opacity={0.9}
+                  style={{ transition: "r 150ms" }}
+                />
+                <text
+                  dy={
+                    np.type === "root" || np.type === "hook" ? -18 : -14
+                  }
+                  textAnchor="middle"
+                  fill={textColor}
+                  fontSize={np.type === "root" ? "13px" : "11px"}
+                  fontWeight={
+                    np.type === "root" || np.type === "layout"
+                      ? "600"
+                      : "400"
+                  }
+                  pointerEvents="none"
+                >
+                  {np.name}
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
 
       {/* Dugum tipi lejanti */}
       <div className="absolute bottom-4 left-4 flex flex-wrap gap-3 bg-surface/80 backdrop-blur-sm rounded-lg px-3 py-2 border border-border-light">
@@ -294,7 +379,9 @@ export default function ForceGraph() {
           >
             <span
               className="w-3 h-3 rounded-full inline-block"
-              style={{ backgroundColor: NODE_COLORS[type as FileNodeType] }}
+              style={{
+                backgroundColor: NODE_COLORS[type as FileNodeType],
+              }}
             />
             {label}
           </div>

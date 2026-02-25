@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# geçici arşiv (silinen/taşınan dosyalar)
+/_temp/
+
 # production
 /build
 
